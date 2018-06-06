@@ -1,0 +1,33 @@
+<table>
+        <tr ng-repeat="(id , city) in poiCtrl.cities">
+                <td>
+                        <button ng-click="poiCtrl.selectedCity(id)"> add city</button>
+                </td>
+                <td>
+                        <!-- with radio button we would like one data model for each option -->
+                        <input type="radio"  value="{{city.name}}_{{id}}" ng-model="poiCtrl.selected">
+                </td>
+
+                <td>
+                        City name:
+                        <span ng-bind="city.name"></span>
+                        <br> City state:
+                        <span ng-bind="city.state"></span>
+                        <br>
+                        <img ng-style="{'height': '100px'}" " ng-src="{{city.image}} ">
+                        </td>      
+                        <td>
+                                <!-- with input we would like to have for each option it's own input -->
+                                <!-- <input type="text " value="{{city.name}}_{{id}} " ng-model="poiCtrl.amount[id] " > -->
+                                <input type="text " value="{{city.name}}_{{id}} " ng-model="poiCtrl.amount[id] " >
+                                <button ng-click="poiCtrl.addToCart(id, city) ">add</button>
+                                </td>
+                                </tr>
+                                  
+                
+
+                
+    
+        
+</table>
+        Selected city: {{poiCtrl.selected}}
