@@ -1,10 +1,9 @@
 angular.module('citiesApp')
-    .controller('indexController', ['setHeadersToken', function (setHeadersToken) {
-
+    .controller('indexController',  ['AuthService','localStorageModel','$location', function (AuthService, localStorageModel, $location) {
+        console.log('init indexController')
 
         self = this;
-
-        console.log('init indexController')
-        self.userName = setHeadersToken.userName
+        self.userName = AuthService.userName
+        self.bLoggedIn = true;
 
     }]);
