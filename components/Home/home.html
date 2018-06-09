@@ -1,4 +1,39 @@
-<div class="page">
-    
+<div class="page d-flex flex-column pb-4">
+    <div class="jumbotron">
+        <div class="d-flex justify-content-center align-items-center flex-column">
+            <h2 class="display-4">You are not registered</h2>
+            <div class="lead mt-2 mb-4">Please take your time to register to our website, or login if you already have an account.</div>
+
+            <div class="d-flex flex-row ">
+                <a class="btn btn-default btn-lg btn-primary text-white mx-4" href="/#/register">Register</a>
+                <a class="btn btn-default btn-lg btn-secondary text-white mx-4" href="/#/login">Login</a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mx-4">
+        <h2 class="text-center">Explore Popular Points of Interest</h2>
+
+        <div class="card-deck mt-4">
+                <div class="card" ng-repeat="card in footerData">
+                  <img class="card-img-top cardImageCustom" ng-src="img/{{card.ImageFileName}}" alt="Card image cap">
+                  <div class="card-body">
+                    <h5 class="card-title">{{card.Title}}</h5>
+                    <p class="card-text">{{card.Description}}</p>
+                  </div>
+                  <div class="card-footer">
+                    <small class="text-muted">Category: {{card.Category}}</small>
+                  </div>
+                </div>
+              </div>
+
+    </div>
+
+
+
+
+
+
 
 </div>

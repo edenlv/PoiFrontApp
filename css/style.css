@@ -420,3 +420,14 @@ header>.bar{
     border-bottom-right-radius: 0px;
     height: 25px;
 }
+
+.cardImageCustom{
+    height: 180px;
+    width: 100%;
+    display: block;
+}
+
+.page{
+    overflow-y: auto;
+    height:calc(100% - 56px);
+}

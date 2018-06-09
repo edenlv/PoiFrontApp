@@ -1,7 +1,7 @@
 
 
 angular.module('citiesApp')
-    .service('AuthService',[ '$http','localStorageService','$location' , function ($http, localStorageService, $location) {
+    .service('AuthService', [ '$rootScope', '$http','localStorageService','$location','propService' , function ($rootScope, $http, localStorageService, $location,propService) {
         console.log('init AuthService')
         var that = this;
         this.Username='';
@@ -12,20 +12,17 @@ angular.module('citiesApp')
         this.setToken = function (t) {
             that.token = t
             $http.defaults.headers.common[ 'x-access-token' ] = t
-            // $httpProvider.defaults.headers.post[ 'x-access-token' ] = token
-            console.log("set")
+            that.addLocalStorage('token', t);
+            console.log("set token complete")
 
         }
 
         this.addLocalStorage = function (key, value) {
-            var dataVal = localStorageService.get(key);
-            console.log(dataVal)
-            if (!dataVal)
-            if (localStorageService.set(key, value)) {
-                console.log("data added")
-            }
+            if (localStorageService.set(key, value)) 
+                console.log("Token was added to LocalStorage successfully")
+            
             else
-                console.log('failed to add the data');
+                console.log('Failed to write token to LocalStorage');
         }
 
 
@@ -63,11 +60,30 @@ angular.module('citiesApp')
         }
 
 
-        this.login = function(sToken, sUsername){
-            if (!sToken || !sUsername) return false;
+        this.login = function(oLoginDetails){
+            if (!oLoginDetails.Username || !oLoginDetails.Password) return false;
 
-            that.Username = sUsername;
-            that.setToken(sToken);
+            $http.post(propService.serviceUrl + 'users/login', oLoginDetails).then(
+            function(response){
+                if (response.data.success && response.data.token){
+                that.loggedIn = true;
+                that.setToken(response.data.token);
+                $location.path('reghome');
+
+                $rootScope.$broadcast('login-success', { Username: oLoginDetails.Username })
+
+                } else {
+                    //do something - modal dialog with error...
+                    console.log("error login")
+                    console.log(response);
+                }
+            },
+            function(error){
+
+                //do something - modal dialog with error...
+                console.log("error login")
+                console.log(error);
+            })
         }
 
 

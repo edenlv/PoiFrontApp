@@ -1,9 +1,14 @@
 angular.module('citiesApp')
-    .controller('indexController',  ['AuthService','localStorageModel','$location', function (AuthService, localStorageModel, $location) {
+    .controller('indexController',  ['$scope', 'AuthService','localStorageModel','$location', function ($scope, AuthService, localStorageModel, $location) {
         console.log('init indexController')
 
         self = this;
-        self.userName = AuthService.userName
-        self.bLoggedIn = true;
+        self.Username = AuthService.userName
+        self.bLoggedIn = false;
+
+        $scope.$on('login-success', function(event, args){
+            self.bLoggedIn = true;
+            self.Username = args.Username;
+        });
 
     }]);

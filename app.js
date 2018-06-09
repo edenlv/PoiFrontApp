@@ -4,6 +4,7 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
     console.log("app.js loading")
 
     var self = this;
+    var serverUrl = 'http://poinodeapp.azurewebsites.net/';
 
     $locationProvider.hashPrefix('');
 
@@ -20,13 +21,17 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
             templateUrl: 'components/POI/poi.html',
             controller: 'poiCtrl as poiCtrl'
         })
-        .when('/service', {
-            templateUrl: 'components/Services/service.html',
-            controller: 'serviceController as srvCtrl'
-        })
         .when('/reghome', {
             templateUrl: 'components/RegisteredHome/home.html',
             controller: 'regHomeController'
+        })
+        .when('/login', {
+            templateUrl: 'components/Login/login.html',
+            controller: 'loginCtrl'
+        })
+        .when('/register', {
+            templateUrl: 'components/Register/register.html',
+            controller: 'registerCtrl'
         })
         .otherwise({ redirectTo: '/' });
 }]);
@@ -43,8 +48,26 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
 //     )}
 // )
 
+app.run(
+    function($rootScope, $location, AuthService) {
+        $rootScope.$on('$routeChangeStart', function(event, next, current){
+            var registeredOnly = ['/reghome']
+            var unregOnly = ['/', '/login', '/register'];
 
-
+            if (!AuthService.loggedIn){
+                if (next.$$route && registeredOnly.includes(next.$$route.originalPath)){
+                    event.preventDefault();
+                    $location.path('/');
+                }
+            } else {
+                if (next.$$route && unregOnly.includes(next.$$route.originalPath)){
+                    event.preventDefault();
+                    $location.path('/reghome');
+                }
+            }
+        })
+    }
+)
 
 
 
