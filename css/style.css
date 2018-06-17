@@ -292,7 +292,7 @@ header>.bar{
      margin-left: 10px;
  }
 
- .valid>input.valid{
+ .valid>input.valid,.valid>select.valid{
     color: #495057;
     background-color: #fff;
     border-color: green;
@@ -430,4 +430,77 @@ header>.bar{
 .page{
     overflow-y: auto;
     height:calc(100% - 56px);
+}
+
+/* styles for '...' */ 
+.block-with-text {
+    /* hide text if it more than N lines  */
+    overflow: hidden;
+    /* for set '...' in absolute position */
+    position: relative; 
+    /* use this value to count block height */
+    line-height: 1.75em;
+    /* max-height = line-height (1.2) * lines max number (3) */
+    max-height: 5.25em; 
+    /* fix problem when last visible word doesn't adjoin right side  */
+    text-align: justify;  
+    /* place for '...' */
+    margin-right: -1em;
+    padding-right: 1em;
+  }
+  /* create the ... */
+  .block-with-text:before {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 0;
+    bottom: 0;
+  }
+  /* hide ... if we have text, which is less than or equal to max lines */
+  .block-with-text:after {
+    /* points in the end */
+    content: '';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    /* set width and height */
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    /* bg color = bg color under block */
+    background: white;
+  }
+
+  hr {
+      border-top:1px solid rgba(0,0,0,.3);
+  }
+
+  .custom-md-select .md-select-value{
+    border:none!important;
+  }
+
+  .custom-md-select{
+      margin-bottom:0px!important;
+  }
+
+.fa-star{
+    filter: drop-shadow(0 0 1px #777);
+}
+
+.poiTitle{
+    display: inline-block;
+    margin-bottom: .75rem;
+    margin-top: 0;
+    font-size: 1.25rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #009bda;
+}
+
+.colorYellow-add{
+    color:yellow;
 }

@@ -1,40 +1,42 @@
-let app = angular.module('citiesApp', ["ngRoute", 'LocalStorageModule']);
+let app = angular.module('citiesApp', ["ngRoute", 'LocalStorageModule', 'ngMaterial', 'ngMessages']);
 
-app.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
-    console.log("app.js loading")
+app.config(['$locationProvider', '$routeProvider', '$httpProvider',
+    function ($locationProvider, $routeProvider, $httpProvider) {
+        console.log("app.js loading")
 
-    var self = this;
-    var serverUrl = 'http://poinodeapp.azurewebsites.net/';
+        var self = this;
+        var serverUrl = 'http://poinodeapp.azurewebsites.net/';
 
-    $locationProvider.hashPrefix('');
+        $locationProvider.hashPrefix('');
 
+        $httpProvider.interceptors.push('httpRequestInterceptor');
 
-    $routeProvider.when('/', {
-        templateUrl: 'components/Home/home.html',
-        controller: 'homeController'
-    })
-        .when('/about', {
-            templateUrl: 'components/About/about.html',
-            controller: 'aboutController as abtCtrl'
+        $routeProvider.when('/', {
+            templateUrl: 'components/Home/home.html',
+            controller: 'homeController'
         })
-        .when('/poi', {
-            templateUrl: 'components/POI/poi.html',
-            controller: 'poiCtrl as poiCtrl'
-        })
-        .when('/reghome', {
-            templateUrl: 'components/RegisteredHome/home.html',
-            controller: 'regHomeController'
-        })
-        .when('/login', {
-            templateUrl: 'components/Login/login.html',
-            controller: 'loginCtrl'
-        })
-        .when('/register', {
-            templateUrl: 'components/Register/register.html',
-            controller: 'registerCtrl'
-        })
-        .otherwise({ redirectTo: '/' });
-}]);
+            .when('/about', {
+                templateUrl: 'components/About/about.html',
+                controller: 'aboutController as abtCtrl'
+            })
+            .when('/poi', {
+                templateUrl: 'components/POI/poi.html',
+                controller: 'poiCtrl as poiCtrl'
+            })
+            .when('/reghome', {
+                templateUrl: 'components/RegisteredHome/home.html',
+                controller: 'regHomeController'
+            })
+            .when('/login', {
+                templateUrl: 'components/Login/login.html',
+                controller: 'loginCtrl'
+            })
+            .when('/register', {
+                templateUrl: 'components/Register/register.html',
+                controller: 'registerCtrl'
+            })
+            .otherwise({ redirectTo: '/' });
+    }]);
 
 // app.run(
 //     function($rootScope, AuthService) {
@@ -49,18 +51,18 @@ app.config(['$locationProvider', '$routeProvider', function ($locationProvider, 
 // )
 
 app.run(
-    function($rootScope, $location, AuthService) {
-        $rootScope.$on('$routeChangeStart', function(event, next, current){
+    function ($rootScope, $location, AuthService) {
+        $rootScope.$on('$routeChangeStart', function (event, next, current) {
             var registeredOnly = ['/reghome']
             var unregOnly = ['/', '/login', '/register'];
 
-            if (!AuthService.loggedIn){
-                if (next.$$route && registeredOnly.includes(next.$$route.originalPath)){
+            if (!AuthService.loggedIn) {
+                if (next.$$route && registeredOnly.includes(next.$$route.originalPath)) {
                     event.preventDefault();
                     $location.path('/');
                 }
             } else {
-                if (next.$$route && unregOnly.includes(next.$$route.originalPath)){
+                if (next.$$route && unregOnly.includes(next.$$route.originalPath)) {
                     event.preventDefault();
                     $location.path('/reghome');
                 }
@@ -69,6 +71,32 @@ app.run(
     }
 )
 
+app.run(
+    function ($rootScope) {
+        $rootScope.$on('$routeChangeStart', function (e) {
+        })
+    }
+)
+
+app.factory('httpRequestInterceptor', ['$injector', function ($injector) {
+    var fnHide = function (req) {
+        // if (req.config && !req.config.ignore) $injector.get('waitDialog').hide();
+        return req;
+    }
+
+    return {
+        request: function (config) {
+            config.headers['x-access-token'] = $injector.get('AuthService').getToken();
+            // if (config.config && !config.config.ignore && config.url.includes('http://azurewebsites.net') && !$injector.get('$http').pendingRequests.length)
+            //     $injector.get('waitDialog').show();
+            return config;
+        },
+        requestError: fnHide,
+        response: fnHide,
+        responseError: fnHide
+
+    };
+}]);
 
 
 

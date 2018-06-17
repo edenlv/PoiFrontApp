@@ -1,5 +1,5 @@
 angular.module('citiesApp')
-    .controller('indexController',  ['$scope', 'AuthService','localStorageModel','$location', function ($scope, AuthService, localStorageModel, $location) {
+    .controller('indexController',  ['$scope', 'AuthService','$location', function ($scope, AuthService, $location) {
         console.log('init indexController')
 
         self = this;

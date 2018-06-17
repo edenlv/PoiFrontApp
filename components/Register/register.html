@@ -1,55 +1,104 @@
 <div id="register">
-    <section>
-        <div class="p-5">
-            <form id="form_register">
-                <formelements>
-                    <div class="form-group row justify-content-center">
-                        <label for="inputUsername" class="col-sm-2 col-form-label required">Username</label>
-                        <div class="inputContainer col-sm-4">
-                            <input name="username" type="text" class="form-control" id="inputUsername" placeholder="Username"></input>
+    <div class="p-5">
+        <form id="form_register">
+            <formelements>
+                <div class="form-row">
+                    <div class="col-6">
+                        <div class="form-group row justify-content-center">
+                            <label for="inputUsername" class="col-sm-4 col-form-label required">Username</label>
+                            <div class="inputContainer col-sm-6">
+                                <input name="username" type="text" class="form-control" id="inputUsername" placeholder="Username"></input>
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <label for="inputPassword" class="col-sm-4 col-form-label required">Password</label>
+                            <div class="inputContainer col-sm-6">
+                                <input name="password" type="password" class="form-control" id="inputPassword" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <label for="inputEmail" class="col-sm-4 col-form-label required">Email</label>
+                            <div class="inputContainer col-sm-6">
+                                <input name="email" type="email" class="form-control" id="inputEmail" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <label for="inputFirstname" class="col-sm-4 col-form-label required">First Name</label>
+                            <div class="inputContainer col-sm-6">
+                                <input name="firstname" type="text" class="form-control" id="inputFirstname" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <label for="inputLastname" class="col-sm-4 col-form-label required">Last Name</label>
+                            <div class="inputContainer col-sm-6">
+                                <input name="lastname" type="text" class="form-control" id="inputLastname" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <label for="inputCategories" class="col-sm-4 col-form-label required">Category</label>
+                            <div class="inputContainer col-sm-6">
+                                <md-select id="inputCategories" ng-change="onChangeCountry()" name="categories" ng-model="selectedToppings" style="margin-top:0px;width:100%;" class="form-control custom-md-select" multiple>
+                                    <md-optgroup label="Categories">
+                                        <md-option ng-value="topping.name" ng-repeat="topping in aCategories">{{topping.name}}</md-option>
+                                    </md-optgroup>
+                                </md-select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row justify-content-center">
+                            <label for="inputQ1" class="col-sm-4 col-form-label required">Question 1</label>
+                            <div class="inputContainer col-sm-6">
+                                <input name="question1" type="text" class="form-control" id="inputQ1" placeholder="Question 1">
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <label for="inputA1" class="col-sm-4 col-form-label required">Answer 1</label>
+                            <div class="inputContainer col-sm-6">
+                                <input name="answer1" type="text" class="form-control" id="inputA1" placeholder="Answer for question 1">
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <label for="inputQ2" class="col-sm-4 col-form-label required">Question 2</label>
+                            <div class="inputContainer col-sm-6">
+                                <input name="question2" type="text" class="form-control" id="inputQ2" placeholder="Question 2">
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <label for="inputA2" class="col-sm-4 col-form-label required">Answer 2</label>
+                            <div class="inputContainer col-sm-6">
+                                <input name="answer2" type="text" class="form-control" id="inputA2" placeholder="Answer for question 2">
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <label for="inputCity" class="col-sm-4 col-form-label required">City</label>
+                            <div class="inputContainer col-sm-6">
+                                <input name="city" type="text" class="form-control" id="inputCity" placeholder="City">
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <label for="inputCountry" class="col-sm-4 col-form-label required">Country</label>
+                            <div class="inputContainer col-sm-6">
+                                <select id="country" name="country" class="form-control" ng-model="selectedCountry" ng-options="country as country.label for country in aCountries">
+        
+                                    <!--<option ng-repeat="country in aCountries">{{country}}</option>-->
+                                  </select>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group row justify-content-center">
-                        <label for="inputPassword" class="col-sm-2 col-form-label required">Password</label>
-                        <div class="inputContainer col-sm-4">
-                            <input name="password" type="password" class="form-control" id="inputPassword" placeholder="Password">
-                        </div>
-                    </div>
-                    <div class="form-group row justify-content-center">
-                        <label for="inputEmail" class="col-sm-2 col-form-label required">Email</label>
-                        <div class="inputContainer col-sm-4">
-                            <input name="email" type="email" class="form-control" id="inputEmail" placeholder="Email">
-                        </div>
-                    </div>
-                    <div class="form-group row justify-content-center">
-                        <label for="inputFirstname" class="col-sm-2 col-form-label required">First Name</label>
-                        <div class="inputContainer col-sm-4">
-                            <input name="firstname" type="text" class="form-control" id="inputFirstname" placeholder="First Name">
-                        </div>
-                    </div>
-                    <div class="form-group row justify-content-center">
-                        <label for="inputLastname" class="col-sm-2 col-form-label required">Last Name</label>
-                        <div class="inputContainer col-sm-4">
-                            <input name="lastname" type="text" class="form-control" id="inputLastname" placeholder="Last Name">
-                        </div>
-                    </div>
-                    <div class="form-group row justify-content-center">
-                        <label for="dt" class="col-sm-2 col-form-label required">Date of Birth</label>
-                        <div class="inputContainer col-sm-4">
-                            <input name="birthday" id="dt" data-provide="datepicker" class="form-control" placeholder="Birthday">
 
-                        </div>
-                    </div>
-                </formelements>
-
-                <div class="form-group row justify-content-center" style="font-size:13px;"><span class="required"> </span> required fields</div>
-
-                <div class="form-group row justify-content-center" style="margin-top:2.25rem;">
-                    <button type="submit" class="btn btn-primary mb-2 btn-lg col-sm-6 bgYellow">Register!</button>
                 </div>
-            </form>
 
-        </div>
-    </section>
+            </formelements>
+
+            <div class="form-group row justify-content-center" style="font-size:13px;"><span class="required"> </span> required fields</div>
+
+            <div class="form-group row justify-content-center" style="margin-top:2.25rem;">
+                <button type="submit" class="btn btn-primary mb-2 btn-lg col-sm-6">Register!</button>
+            </div>
+        </form>
+
+    </div>
 </div>

@@ -1,0 +1,41 @@
+<md-dialog style="max-height:100%;width:35%;">
+    <form ng-cloak class="m-0">
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <h2>Point of Interest ID: {{currPoi.PID}}</h2>
+          <span flex></span>
+          <md-button class="md-icon-button" ng-click="cancel()">
+            <i class="fas fa-times" aria-label="Close dialog"></i>
+          </md-button>
+        </div>
+      </md-toolbar>
+  
+      <md-dialog-content>
+        <div class="md-dialog-content">
+          <h2 class="mb-4">{{currPoi.Title}}</h2>
+          <img style="margin: auto; max-width: 100%;display:inherit;" class="mb-4" alt="Lush mango tree" ng-src="img/{{currPoi.ImageFileName}}">
+  
+          <p>
+            {{currPoi.Description}}
+          </p>
+        </div>
+      </md-dialog-content>
+  
+
+      <md-dialog-actions layout="row" style="border-top: 1px solid lightgrey;">
+        <div class="row align-items-center w-100">
+          <div class="col-sm text-center">
+            Rating: {{currPoi.Rating}}
+          </div>
+          <div class="col-sm text-center">
+            Views: {{currPoi.Views}}
+          </div>
+          <div class="col-sm text-center">
+            <md-button class="md-icon-button" aria-label="isfavorite" ng-if="isRegistered()">
+              <i class="fa fa-star fa-lg cust" ng-class="{'colorYellow': currPoi.isFavorite}"></i>
+          </md-button>
+          </div>
+        </div>
+      </md-dialog-actions>
+    </form>
+  </md-dialog>
