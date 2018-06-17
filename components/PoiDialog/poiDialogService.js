@@ -19,6 +19,7 @@ function ($rootScope, propService, $http, $mdDialog, waitDialog, AuthService) {
                     return $http.get(propService.getServiceURL() + 'poi/' + sPID, {ignore: true}).then(
                     function(oResponse){
                         waitDialog.hide();
+                        oResponse.data.Rating = oResponse.data.Rating === 0 ? "0%" : (oResponse.data.Rating-1)*100/4 + "%";
                         console.log(oResponse.data);
                         return oResponse.data;
                     },
@@ -27,19 +28,43 @@ function ($rootScope, propService, $http, $mdDialog, waitDialog, AuthService) {
                         console.log("error loading pid "+ sPID);
                     }
                 )
+                },
+
+                poiReviews: function($http){
+                    waitDialog.show();
+
+                    return $http.get(propService.getServiceURL() + 'poi/' + sPID + '/lastreviews', {ignore: true}).then(
+                        function(oResponse){
+                            waitDialog.hide();
+                            console.log(oResponse.data);
+                            $(oResponse.data).each(
+                                (idx, elem) => {
+                                    elem.DateFormatted = moment(new Date(elem.Date)).format("Do MMMM YYYY")
+                                }
+                            )
+                            return oResponse.data;
+                        },
+                        function(oErr){
+                            waitDialog.hide();
+                            console.log("error loading pid reviews"); console.log(oErr);
+                            
+                        }
+                    )
                 }
             }
           });
 
     }
 
-    that.isRegistered = function(){
-        return AuthService.loggedIn;
-    }
 
 
+    function DialogController($scope, $mdDialog, poiData, poiReviews) {
 
-    function DialogController($scope, $mdDialog, poiData) {
+        $scope.isRegistered = function(){
+            return AuthService.loggedIn;
+        }
+
+        $scope.poiReviews = poiReviews;
 
         $scope.currPoi = poiData;
 

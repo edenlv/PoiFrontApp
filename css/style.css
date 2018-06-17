@@ -501,6 +501,6 @@ header>.bar{
     color: #009bda;
 }
 
-.colorYellow-add{
+.colorYellow-add, .colorYellow{
     color:yellow;
 }

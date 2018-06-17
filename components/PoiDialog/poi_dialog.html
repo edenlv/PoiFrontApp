@@ -18,6 +18,27 @@
           <p>
             {{currPoi.Description}}
           </p>
+          
+          <h5 class="mb-3">Latest Reviews</h5>
+          <p ng-if="!poiReviews.length">No reviews on {{currPoi.Title}} yet.</p>
+          <table ng-if="poiReviews.length" class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Review</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="review in poiReviews">
+                <th scope="row">{{$index+1}}</th>
+                <td>{{review.ReviewText}}</td>
+                <td>{{review.Rating}}</td>
+                <td>{{review.DateFormatted}}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </md-dialog-content>
   
