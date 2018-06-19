@@ -2,6 +2,8 @@ angular.module('citiesApp').controller('regHomeController',
     ['$scope', 'AuthService', '$http', 'propService', 'poiDialog',
         function ($scope, AuthService, $http, propService, poiDialog) {
 
+            $scope.toggleFav = propService.toggleFavBtn;
+
             $scope.$on('$routeChangeSuccess', function () {
                 if (AuthService.loggedIn) {
                     console.log("IM LOGGED IN!!")

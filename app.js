@@ -17,11 +17,11 @@ app.config(['$locationProvider', '$routeProvider', '$httpProvider',
         })
             .when('/about', {
                 templateUrl: 'components/About/about.html',
-                controller: 'aboutController as abtCtrl'
+                controller: 'aboutController'
             })
             .when('/poi', {
                 templateUrl: 'components/POI/poi.html',
-                controller: 'poiCtrl as poiCtrl'
+                controller: 'poiCtrl'
             })
             .when('/reghome', {
                 templateUrl: 'components/RegisteredHome/home.html',
@@ -34,6 +34,10 @@ app.config(['$locationProvider', '$routeProvider', '$httpProvider',
             .when('/register', {
                 templateUrl: 'components/Register/register.html',
                 controller: 'registerCtrl'
+            })
+            .when('/forgotpw', {
+                templateUrl: 'components/ForgotPW/forgotPW.html',
+                controller: 'forgotpwCtrl'
             })
             .otherwise({ redirectTo: '/' });
     }]);

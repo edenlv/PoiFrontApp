@@ -49,6 +49,11 @@ angular.module('citiesApp')
         // });
         // }
 
+        this.onLoginSuccess = function(sToken){
+            that.loggedIn = true;
+            that.setToken(sToken);
+            $location.path('reghome');
+        }
 
         this.login = function(oLoginDetails){
             if (!oLoginDetails.Username || !oLoginDetails.Password) return false;
@@ -58,9 +63,8 @@ angular.module('citiesApp')
             $http.post(propService.serviceUrl + 'users/login', oLoginDetails).then(
             function(response){
                 if (response.data.success && response.data.token){
-                    that.loggedIn = true;
-                    that.setToken(response.data.token);
-                    $location.path('reghome');
+                    
+                    that.onLoginSuccess(response.data.token);
 
                     $rootScope.$broadcast('login-success', { Username: oLoginDetails.Username })
 
@@ -69,7 +73,6 @@ angular.module('citiesApp')
 
                     $rootScope.$broadcast('login-error', response.data);
 
-                    //do something - modal dialog with error...
                     console.log("error login")
                     console.log(response);
                 }

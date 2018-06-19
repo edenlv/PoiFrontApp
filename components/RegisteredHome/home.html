@@ -11,9 +11,9 @@
                 </div>
                 <div class="card-footer" layout="row" layout-align="space-between center">
                     <small class="text-muted">Category: {{card.Category}}</small>
-                    <!--<md-button class="md-icon-button">
-                    <i class="fa fa-star fa-lg cust" style="color:yellow;"></i>
-                </md-button>-->
+                    <md-button aria-label="is fav button" ng-click="toggleFav($event, card)" ng-class="{'colorYellow': card.isFavorite, 'md-icon-button': true}">
+                        <i class="fa fa-star fa-lg cust"></i>
+                    </md-button>
                 </div>
             </div>
 
@@ -23,7 +23,7 @@
 
         </div>
 
-        
+
     </div>
 
     <hr></hr>
@@ -40,17 +40,15 @@
                 </div>
                 <div class="card-footer" layout="row" layout-align="space-between center">
                     <small class="text-muted">Category: {{card.Category}}</small>
-                    <!--
-                    <md-button class="md-icon-button">
-                        <i class="fa fa-star fa-lg" style="color:yellow;"></i>
+                    <md-button aria-label="is fav button" ng-click="toggleFav($event, card)" ng-class="{'colorYellow': card.isFavorite, 'md-icon-button': true}">
+                        <i class="fa fa-star fa-lg cust"></i>
                     </md-button>
-                -->  
                 </div>
             </div>
         </div>
 
         <div ng-if="!recommendedPoi.length" class="my-3 text-center">Loading...<br><br><i class="fas fa-spinner fa-pulse" style="font-size:50px;"></i></div>
-        
+
     </div>
 
 </div>

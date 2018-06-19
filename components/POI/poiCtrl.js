@@ -1,27 +1,65 @@
 angular.module('citiesApp')
- .controller('poiCtrl', [function() {
- 
+    .controller('poiCtrl',
+    ['$scope', '$http', 'propService', '$mdDialog', 'poiDialog', 'orderByFilter', 'AuthService',
+        function ($scope, $http, propService, $mdDialog, poiDialog, orderBy, AuthService) {
 
-    self = this;
+            $scope.toggleFavBtn = propService.toggleFavBtn;
 
-    self.cities = {
-        1 : {name:"Paris", state: "France", image: "https://media-cdn.tripadvisor.com/media/photo-s/0d/f5/7c/f2/eiffel-tower-priority.jpg"}
-        ,2 : {name:"Jerusalem", state: "Israel", image: "https://cdni.rt.com/files/2017.12/article/5a3fe04efc7e93cd698b4567.jpg"}
-        ,3 : {name:"London", state: "England", image: "http://www.ukguide.co.il/Photos/England/London/British-Royal-Tour.jpg"}
-    }
+            $scope.openPoiDialog = function(scope){
+                poiDialog.open(scope.card.PID);
+            }
 
-    self.selectedCity= function (id){
+            $scope.isRegistered = function () {
+                return AuthService.loggedIn;
+            }
 
-        console.log (self.selected )
-    }
+            $scope.onRouteSuccess = function () {
+                $http.get(propService.serviceUrl + 'poi').then(
+                    function (response) {
+                        $scope.allpoi = response.data;
+                    }
+                )
+            }
 
-    self.addToCart = function (id, city) {
+            $scope.$on('$routeChangeSuccess', $scope.onRouteSuccess);
 
-        console.log(id)
-        console.log(city)
-        console.log(self.amount[id])
+            $scope.aCategories = [
+                'Brewery',
+                'Culture',
+                'Entertainment',
+                'Restaurant'
+            ]
 
 
-    }
 
- }]);
+            $scope.selectedItem = undefined;
+            $scope.reverse = true;
+
+            $scope.getSelectedText = function () {
+                if ($scope.selectedItem !== undefined) {
+                    return $scope.selectedItem;
+                } else {
+                    return "Category";
+                }
+            };
+            $scope.sorted = false;
+            var that = this;
+
+            $scope.sortByRating = function ($event) {
+                $($event.currentTarget).find('svg').toggleClass('ng-hide');
+                $scope.sorted = true;
+                $scope.reverse = !$scope.reverse;
+                
+                $scope.allpoi = orderBy($scope.allpoi, 'Rating', $scope.reverse);
+            }
+
+            $scope.filter = function(){
+                $scope.nameFilter = $scope.sf_poiname;
+                $scope.catFilter = $scope.selectedItem;
+            }
+
+            $scope.sf_poiname = undefined;
+
+            
+
+        }]);

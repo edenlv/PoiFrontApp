@@ -1,0 +1,53 @@
+<md-content layout-padding>
+
+    <div class="p-5" ng-cloak>
+        <form id="form_forgot" ng-show="firstStage" ng-cloak>
+            <formelements>
+
+                <div class="form-group row justify-content-center">
+                    <label for="inputUsernameLogin" class="col-sm-2 col-form-label required">Username</label>
+                    <div class="inputContainer col-sm-4">
+                        <input name="username" type="text" class="form-control" id="inputUsernameLogin" placeholder="Username"></input>
+                    </div>
+                </div>
+
+            </formelements>
+
+            <div class="form-group row justify-content-center" style="margin-top:2.25rem;">
+                <button id="btn_getq" type="submit" class="btn btn-primary mb-2 btn-lg col-sm-3">Get Question</button>
+            </div>
+
+        </form>
+
+        <form id="form_forgot2" ng-show="!sPassword.length &amp;&amp; !firstStage" ng-cloak>
+            <formelements>
+
+                <div class="form-col">
+                    <div class="form-group col-md-6 mx-auto mb-4">
+                        <label for="inputEmail4">Question 1: {{aQuestions[0]}}</label>
+                        <input name="answer1" type="text" class="form-control" id="inputAnswer1" placeholder="Answer for question 1"></input>
+                    </div>
+                    <div class="form-group col-md-6 mx-auto mb-4">
+                        <label for="inputPassword4">Question 2: {{aQuestions[1]}}</label>
+                        <input name="answer2" type="text" class="form-control" id="inputAnswer2" placeholder="Answer for question 2"></input>
+                    </div>
+                </div>
+
+            </formelements>
+
+            <div class="form-group row justify-content-center" style="margin-top:2.25rem;">
+                <button id="btn_getpw" type="submit" class="btn btn-primary mb-2 btn-lg col-sm-3">Get Password!</button>
+            </div>
+
+        </form>
+
+        <div class="form-group col-md-3 mx-auto mb-4" ng-show="sPassword.length">
+                <label>Your password is:</label>
+            <input type="text" class="form-control" ng-model="sPassword" disabled></input>
+        </div>
+
+
+
+    </div>
+
+</md-content>

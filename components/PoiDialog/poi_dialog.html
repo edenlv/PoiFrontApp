@@ -1,62 +1,67 @@
-<md-dialog style="max-height:100%;width:35%;">
-    <form ng-cloak class="m-0">
-      <md-toolbar>
-        <div class="md-toolbar-tools">
-          <h2>Point of Interest ID: {{currPoi.PID}}</h2>
-          <span flex></span>
-          <md-button class="md-icon-button" ng-click="cancel()">
-            <i class="fas fa-times" aria-label="Close dialog"></i>
-          </md-button>
-        </div>
-      </md-toolbar>
-  
-      <md-dialog-content>
-        <div class="md-dialog-content">
-          <h2 class="mb-4">{{currPoi.Title}}</h2>
-          <img style="margin: auto; max-width: 100%;display:inherit;" class="mb-4" alt="Lush mango tree" ng-src="img/{{currPoi.ImageFileName}}">
-  
-          <p>
-            {{currPoi.Description}}
-          </p>
-          
-          <h5 class="mb-3">Latest Reviews</h5>
-          <p ng-if="!poiReviews.length">No reviews on {{currPoi.Title}} yet.</p>
-          <table ng-if="poiReviews.length" class="table">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Review</th>
-                <th scope="col">Rating</th>
-                <th scope="col">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="review in poiReviews">
-                <th scope="row">{{$index+1}}</th>
-                <td>{{review.ReviewText}}</td>
-                <td>{{review.Rating}}</td>
-                <td>{{review.DateFormatted}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </md-dialog-content>
-  
+<md-dialog style="max-height:100%;width:40%;">
+  <form ng-cloak class="m-0">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Point of Interest ID: {{card.PID}}</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <i class="fas fa-times" aria-label="Close dialog"></i>
+        </md-button>
+      </div>
+    </md-toolbar>
 
-      <md-dialog-actions layout="row" style="border-top: 1px solid lightgrey;">
-        <div class="row align-items-center w-100">
-          <div class="col-sm text-center">
-            Rating: {{currPoi.Rating}}
-          </div>
-          <div class="col-sm text-center">
-            Views: {{currPoi.Views}}
-          </div>
-          <div class="col-sm text-center">
-            <md-button class="md-icon-button" aria-label="isfavorite" ng-if="isRegistered()">
-              <i class="fa fa-star fa-lg cust" ng-class="{'colorYellow': currPoi.isFavorite}"></i>
-          </md-button>
-          </div>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <h2 class="mb-4">{{card.Title}}</h2>
+        <img style="margin: auto; max-width: 100%;display:inherit;" class="mb-4" alt="Lush mango tree" ng-src="img/{{card.ImageFileName}}">
+
+        <p>
+          {{card.Description}}
+        </p>
+
+        <h5 class="mb-3">Latest Reviews</h5>
+        <p ng-if="!poiReviews.length">No reviews on {{card.Title}} yet.</p>
+        <table ng-if="poiReviews.length" class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Review</th>
+              <th scope="col">Rating</th>
+              <th scope="col">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="review in poiReviews">
+              <th scope="row">{{$index+1}}</th>
+              <td>{{review.ReviewText}}</td>
+              <td>{{review.Rating}}</td>
+              <td>{{review.DateFormatted}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </md-dialog-content>
+
+
+    <md-dialog-actions layout="row" style="border-top: 1px solid lightgrey;">
+      <div class="row align-items-center w-100">
+        <div class="col-sm text-left">
+          Rating: <span class="badge badge-primary badge-pill">{{card.Rating}}</span>
         </div>
-      </md-dialog-actions>
-    </form>
-  </md-dialog>
+        <div class="col-sm text-left">
+          Views: <span class="badge badge-primary badge-pill">{{card.Views}}</span>
+        </div>
+
+        <div class="col-sm text-center" ng-if="isRegistered()">
+          <md-button class="md-primary" style="color:#009bda">Add Review</md-button>
+        </div>
+
+        <div class="col-sm text-right">
+          <md-button ng-if="isRegistered()" aria-label="is fav button" ng-click="toggleFavBtn($event, card)" ng-class="{'colorYellow': card.isFavorite, 'md-icon-button': true}">
+              <i class="fa fa-star fa-lg cust"></i>
+          </md-button>
+        </div>
+      </div>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

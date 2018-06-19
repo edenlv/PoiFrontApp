@@ -1,33 +1,65 @@
-<table>
-        <tr ng-repeat="(id , city) in poiCtrl.cities">
-                <td>
-                        <button ng-click="poiCtrl.selectedCity(id)"> add city</button>
-                </td>
-                <td>
-                        <!-- with radio button we would like one data model for each option -->
-                        <input type="radio"  value="{{city.name}}_{{id}}" ng-model="poiCtrl.selected">
-                </td>
+<div class="mx-4">
+    <h2 class="text-center mt-3">Explore Popular Points of Interest</h2>
 
-                <td>
-                        City name:
-                        <span ng-bind="city.name"></span>
-                        <br> City state:
-                        <span ng-bind="city.state"></span>
-                        <br>
-                        <img ng-style="{'height': '100px'}"  ng-src="{{city.image}} ">
-                        </td>      
-                        <td>
-                                <!-- with input we would like to have for each option it's own input -->
-                                <!-- <input type="text " value="{{city.name}}_{{id}} " ng-model="poiCtrl.amount[id] " > -->
-                                <input type="text " value="{{city.name}}_{{id}} " ng-model="poiCtrl.amount[id] " >
-                                <button ng-click="poiCtrl.addToCart(id, city) ">add</button>
-                                </td>
-                                </tr>
-                                  
-                
+    <div class="card-deck mt-4 justify-content-center">
 
-                
-    
-        
-</table>
-        Selected city: {{poiCtrl.selected}}
+        <md-toolbar class="md-hue-1">
+            <div layout="row" class="justify-content-between">
+
+                <md-input-container class="ml-5">
+                    <md-select ng-model="selectedItem" md-selected-text="getSelectedText()">
+                        <md-optgroup label="category">
+                            <md-option ng-repeat="category in aCategories" ng-value="category">{{category}}</md-option>
+                        </md-optgroup>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container md-no-float class="m-0 d-flex flex-row justify-content-center align-items-center">
+                    <input ng-model="sf_poiname" placeholder="POI Name">
+                </md-input-container>
+
+                <md-button class="md-primary" aria-label="is fav button" ng-click="sortByRating($event)">
+                    <div layout="row">
+                        <div ng-if="sorted" class="mt-2">
+                            <i class="fas fa-sort-down mr-2 ng-hide" style="vertical-align: -0.5rem;font-size:20px;"></i>
+                            <i class="fas fa-sort-up mr-2" style="vertical-align: -0.5rem;font-size:20px;"></i>
+                        </div>
+                        <span>Sort by Rating</span>
+                    </div>
+
+                </md-button>
+
+                <md-toolbar-filler style="background-color:darkgray;width:104px;" layout="row" layout-align="center center">
+                    <md-button class="md-primary" style="color:white;" aria-label="is fav button" ng-click="filter()">
+                        Filter
+                    </md-button>
+                </md-toolbar-filler>
+
+            </div>
+        </md-toolbar>
+        <br>
+
+
+        <div class="card my-3" ng-repeat="card in allpoi | filter: {Category:catFilter, Title:nameFilter} as filtered" style="min-width:250px;max-width:250px;">
+            <img class="card-img-top cardImageCustom" style="height:145px;" ng-src="img/{{card.ImageFileName}}" alt="Card image cap"
+                ng-click="openPoiDialog(this)">
+            <div class="card-body">
+                <a class="card-title poiTitle" href="" ng-click="openPoiDialog(this)">{{card.Title}}</a>
+                <p class="card-text" style="font-size:14px;">{{card.Description}}</p>
+            </div>
+            <div class="card-footer" layout="row" layout-align="space-between center">
+                <small class="text-muted">Category: {{card.Category}}, Rating: {{card.Rating}}</small>
+
+                <md-button ng-if="isRegistered()" aria-label="is fav button" ng-click="toggleFavBtn($event, card)" ng-class="{'colorYellow': card.isFavorite, 'md-icon-button': true}">
+                        <i class="fa fa-star fa-lg cust"></i>
+                    </md-button>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="!allpoi.length" class="my-3 text-center">Loading...<br><br><i class="fas fa-spinner fa-pulse" style="font-size:50px;"></i></div>
+    <div class="my-3 text-center" ng-show="filtered.length === 0">
+        <p>No results found.</p>
+    </div>
+
+</div>

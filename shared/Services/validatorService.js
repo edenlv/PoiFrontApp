@@ -11,11 +11,11 @@ angular.module('citiesApp')
                 return /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/.test(value);
             }, "Password must contain letters AND numbers.");
 
-            $.validator.addMethod("multiselect_min2", (value,element) => {
+            $.validator.addMethod("multiselect_min2", (value, element) => {
                 return angular.element(element).scope().selectedToppings.length >= 2
             }, "You must pick at least 2 categories");
 
-            $.validator.addMethod("select_country", (value,element)=> {
+            $.validator.addMethod("select_country", (value, element) => {
                 return angular.element(element).scope().selectedCountry.label
             }, "You must select a country")
 
@@ -114,6 +114,52 @@ angular.module('citiesApp')
                         submitHandler: fnSubmit
                     });
                     // }
+                },
+
+                initGetQuestionForm: function(fnSubmit){
+                    $('#form_forgot').validate({
+                        rules: {
+                            username: {
+                                minlength: 1,
+                                required: true
+                            }
+                        },
+                        highlight: function (element) {
+                            $(element).parent().addClass('err').removeClass('valid');
+                        },
+                        success: function (element) {
+                            element.parent().addClass('valid');
+                            element.parent().removeClass('err');
+                        },
+                        submitHandler: fnSubmit
+                    });
+                },
+
+                initGetPasswordForm: function(fnSubmit){
+                    $('#form_forgot2').validate({
+                        rules: {
+                            username: {
+                                minlength: 1,
+                                required: true
+                            },
+                            answer1: {
+                                minlength: 1,
+                                required: true
+                            },
+                            answer2: {
+                                minlength: 1,
+                                required: true
+                            }
+                        },
+                        highlight: function (element) {
+                            $(element).parent().addClass('err').removeClass('valid');
+                        },
+                        success: function (element) {
+                            element.parent().addClass('valid');
+                            element.parent().removeClass('err');
+                        },
+                        submitHandler: fnSubmit
+                    });
                 },
 
                 resetForm: function (sId) {

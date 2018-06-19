@@ -1,7 +1,6 @@
 angular.module('citiesApp').controller('homeController',
-    ['$scope', '$http', 'propService', '$mdDialog', 'poiDialog', function ($scope, $http, propService, $mdDialog, poiDialog) {
-
-        
+    ['$scope', '$http', 'propService', '$mdDialog', 'poiDialog',
+    function ($scope, $http, propService, $mdDialog, poiDialog) {
 
         $scope.onRouteSuccess = function () {
             $http.get(propService.serviceUrl + 'poi/footer').then(
