@@ -1,8 +1,8 @@
 
 
 angular.module('citiesApp')
-    .service('AuthService', [ '$rootScope','$location','propService', '$http', 'waitDialog', 'localStorageService',
-    function ($rootScope, $location, propService, $http, waitDialog, localStorageService) {
+    .service('AuthService', [ '$rootScope','$location','propService', '$http', 'waitDialog', 'localStorageService', '$timeout',
+    function ($rootScope, $location, propService, $http, waitDialog, localStorageService, $timeout) {
         console.log('init AuthService')
 
         var that = this;
@@ -15,6 +15,12 @@ angular.module('citiesApp')
             that.token = t
             that.addLocalStorage('token', t);
             console.log("set token complete")
+        }
+
+        this.setUsername = function(sUser){
+            that.Username = sUser;
+            that.addLocalStorage('user', sUser);
+            console.log("set user to local storage complete");
         }
 
         this.getToken = () => { return that.token };
@@ -49,10 +55,20 @@ angular.module('citiesApp')
         // });
         // }
 
-        this.onLoginSuccess = function(sToken){
+        this.checkLogin = function(){
+            var token = localStorageService.get('token');
+            var user = localStorageService.get('user');
+            if (token && user){
+                $timeout(()=>{this.onLoginSuccess(token, user)},0);
+            }
+        }
+
+        this.onLoginSuccess = function(sToken, sUser){
             that.loggedIn = true;
             that.setToken(sToken);
+            that.setUsername(sUser);
             $location.path('reghome');
+            $rootScope.$broadcast('login-success', { Username: sUser })
         }
 
         this.login = function(oLoginDetails){
@@ -64,10 +80,7 @@ angular.module('citiesApp')
             function(response){
                 if (response.data.success && response.data.token){
                     
-                    that.onLoginSuccess(response.data.token);
-
-                    $rootScope.$broadcast('login-success', { Username: oLoginDetails.Username })
-
+                    that.onLoginSuccess(response.data.token, oLoginDetails.Username);
 
                 } else {
 

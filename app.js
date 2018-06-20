@@ -59,7 +59,7 @@ app.config(['$locationProvider', '$routeProvider', '$httpProvider',
 // )
 
 app.run(
-    function ($rootScope, $location, AuthService) {
+    function ($rootScope, $location, AuthService, localStorageService) {
         $rootScope.$on('$routeChangeStart', function (event, next, current) {
             var registeredOnly = ['/reghome', '/favorites']
             var unregOnly = ['/', '/login', '/register'];
@@ -76,15 +76,12 @@ app.run(
                 }
             }
         })
+
+        AuthService.checkLogin();
     }
 )
 
-app.run(
-    function ($rootScope) {
-        $rootScope.$on('$routeChangeStart', function (e) {
-        })
-    }
-)
+
 
 app.factory('httpRequestInterceptor', ['$injector', function ($injector) {
     var fnHide = function (req) {

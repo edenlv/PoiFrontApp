@@ -528,3 +528,7 @@ header>.bar{
     width: auto; }
   .selectdemoSelectHeader md-content._md {
     max-height: 240px; }
+
+.custSlider .md-track-container{
+    height:5px!important;
+}

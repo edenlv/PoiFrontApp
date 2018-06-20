@@ -1,5 +1,5 @@
 angular.module('citiesApp')
-    .service('poiDialog', ['$rootScope', 'propService', '$http', '$mdDialog', 'waitDialog', 'AuthService', '$location',
+    .service('poiDialog', ['$rootScope', 'propService', '$http', '$mdDialog', 'waitDialog', 'AuthService', '$location', 'reviewDialog',
         function ($rootScope, propService, $http, $mdDialog, waitDialog, AuthService, $location) {
 
             var that = this;
@@ -63,9 +63,32 @@ angular.module('citiesApp')
 
 
 
-            function DialogController($scope, $mdDialog, poiData, poiReviews, waitDialog, propService, $location) {
+            function DialogController($scope, $mdDialog, poiData, poiReviews, waitDialog, propService, $location, reviewDialog) {
 
                 console.log('controller')
+
+                $scope.$on('review-added', function(){
+                    waitDialog.show();
+
+                    $http.get(propService.getServiceURL() + 'poi/' + poiData.PID + '/lastreviews', { ignore: true }).then(
+                        function (oResponse) {
+                            waitDialog.hide();
+                            console.log(oResponse.data);
+                            $(oResponse.data).each(
+                                (idx, elem) => {
+                                    elem.DateFormatted = moment(new Date(elem.Date)).format("Do MMMM YYYY")
+                                }
+                            )
+                            $scope.poiReviews = oResponse.data;
+                            waitDialog.hide();
+                        },
+                        function (oErr) {
+
+                            console.log("error loading pid reviews"); console.log(oErr);
+
+                        }
+                    )
+                })
 
                 $scope.toggleFavBtn = propService.toggleFavBtn;
 
@@ -86,14 +109,11 @@ angular.module('citiesApp')
                 $scope.cancel = function () {
                     $mdDialog.cancel();
                 };
-            }
 
-            function ReviewDialogController($scope, $mdDialog, propService){
-
-                $scope.reviewText = '';
-
-                $scope.stars = 0;
-
+                $scope.openReviewDialog = function($event, card){
+                    console.log(card);
+                    reviewDialog.open(card);
+                }
             }
 
         }]);

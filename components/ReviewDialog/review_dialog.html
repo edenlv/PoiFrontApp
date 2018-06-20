@@ -1,0 +1,38 @@
+<md-dialog style="max-height:100%;width:30%;">
+    <form ng-cloak class="m-0">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Write Your Review</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <i class="fas fa-times" aria-label="Close dialog"></i>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-input-container class="md-block">
+                    <label>Your Review (optional)</label>
+                    <textarea ng-model="reviewText" md-maxlength="200" rows="3" md-select-on-focus></textarea>
+                </md-input-container>
+
+                <div class="w-100 text-center"><span >Rating (1-5): <span style="font-size:12px;">(optional)</span></span></div>
+                <md-slider style="width:60%;" flex class="md-primary custSlider m-auto" md-discrete ng-model="stars" step="1" min="1" max="5" aria-label="rating">
+                    </md-slider>
+            </div>
+
+            
+
+        </md-dialog-content>
+
+
+        <md-dialog-actions class="p-0" style="border-top: 1px solid lightgrey;">
+            <div class="text-center w-100">
+                <md-button class="md-primary" style="color:#009bda" ng-click="addReview()">Add Review</md-button>
+
+
+            </div>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

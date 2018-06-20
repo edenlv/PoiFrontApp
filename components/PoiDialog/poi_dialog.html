@@ -33,7 +33,7 @@
           <tbody>
             <tr ng-repeat="review in poiReviews">
               <th scope="row">{{$index+1}}</th>
-              <td>{{review.ReviewText}}</td>
+              <td>{{review.ReviewText}}<span ng-if="!review.ReviewText">-</span></td>
               <td>{{review.Rating}}</td>
               <td>{{review.DateFormatted}}</td>
             </tr>
@@ -53,7 +53,7 @@
         </div>
 
         <div class="col-sm text-center">
-          <md-button ng-if="isRegistered()" class="md-primary" style="color:#009bda">Add Review</md-button>
+          <md-button ng-if="isRegistered()" class="md-primary" style="color:#009bda" ng-click="openReviewDialog($event, card)">Add Review</md-button>
         </div>
 
         <div class="col-sm text-right">
