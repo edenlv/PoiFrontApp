@@ -1,54 +1,97 @@
 angular.module('citiesApp')
-    .factory('propService', ['$location', '$http', 'waitDialog', function ($location, $http, waitDialog) {
+    .factory('propService', ['$location', '$http', 'waitDialog', '$route', '$rootScope', function ($location, $http, waitDialog, $route, $rootScope) {
         var oService = {
-            
+
             aFavSet: [],
-            addToFav: function(sPID){
-                if (sPID) {
-                    if (oService.has(sPID)){
-                        oService.has(sPID).isFavorite = true;
+
+            addToFav: function (oPoi) {
+                if (oPoi) {
+                    if (oService.has(oPoi.PID)) {
+                        oService.has(oPoi.PID).isFavorite = true;
                     }
-                    else oService.aFavSet.push({PID: sPID, isFavorite: true});
+                    else {
+                        oService.aFavSet.push(oPoi);
+                    } 
+
+                    $rootScope.$broadcast('fav-counter-update', { Count: oService.favCount+1 });
                 }
             },
 
-            toggleFavBtn: function($event, card){
+            toggleFavBtn: function ($event, card) {
                 var jqButton = $($event.currentTarget);
-
+                card.isFavorite = !card.isFavorite;
                 $($event.currentTarget).toggleClass('colorYellow');
-
-                if (jqButton.hasClass('colorYellow')) oService.addToFav(card.PID);
-                else oService.delFromFav(card.PID);
-            },
-
-            delFromFav: function(sPID){
-                if (sPID) {
-                    if (oService.has(sPID)){
-                        oService.has(sPID).isFavorite = false;
-                    }
-                    else oService.aFavSet.push({PID: sPID, isFavorite: false});
+                if (oService.has(card.PID)) {
+                    oService.remove(card.PID);
+                    var newCount = card.isFavorite ? oService.favCount + 1 : oService.favCount - 1;
+                    $rootScope.$broadcast('fav-counter-update', { Count: newCount });
+                } else {
+                    if (jqButton.hasClass('colorYellow')) oService.addToFav(card);
+                    else oService.delFromFav(card);
                 }
             },
 
-            saveFavorites: function(){
+            delFromFav: function (oPoi) {
+                if (oPoi) {
+                    if (oService.has(oPoi.PID)) {
+                        oService.has(oPoi.PID).isFavorite = false;
+                    }
+                    else {
+                        oService.aFavSet.push(oPoi);
+                    }
+
+                    $rootScope.$broadcast('fav-counter-update', { Count: oService.favCount-1 });
+                }
+            },
+
+            remove: function(sPID){
+                oService.aFavSet.splice(oService.aFavSet.indexOf(oService.has(sPID)),1);
+            },
+
+            getRecentFavs: function () {
+                var result = [];
+
+                oService.aFavSet.reverse().forEach(
+                    (elem, idx) => {
+                        if (result.length < 2 && elem.isFavorite) result.push(elem);
+                    }
+                );
+
+                oService.aFavSet.reverse();
+                return result;
+            },
+
+            saveFavorites: function () {
+                console.log($location);
+                if (oService.aFavSet.length === 0) return;
                 $http.post(oService.getServiceURL() + '/reg/poi/setfavs', oService.aFavSet).then(
-                    function(oResponse){
+                    function (oResponse) {
                         console.log(oResponse);
+
                     },
-                    function (oErr){
+                    function (oErr) {
                         console.log(oErr);
                     }
                 ).finally(
-                    function(){
+                    function () {
                         oService.aFavSet = [];
+                        $route.reload();
                     }
-                )
+                    )
+            },
+
+            getFavOrders: function () {
+                return oService.orders ? oService.orders : [];
+            },
+
+            setFavOrders: function (aOrder) {
+                oService.orders = $.extend({}, aOrder, true);
             },
 
             //returns first obj in array that complies with the expression
-            has: function(sPID){
+            has: function (sPID) {
                 return oService.aFavSet.find(
-                    function(oPoi, idx, arr){
+                    function (oPoi, idx, arr) {
                         return oPoi.PID.toString() === sPID.toString();
                     }
                 )

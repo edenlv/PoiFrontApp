@@ -1,22 +1,43 @@
 angular.module('citiesApp')
-    .controller('indexController', 
-    ['$scope', 'AuthService','$location', 'propService',
-    function ($scope, AuthService, $location, propService) {
-        console.log('init indexController')
+    .controller('indexController',
+    ['$scope', 'AuthService', '$location', 'propService', '$http',
+        function ($scope, AuthService, $location, propService, $http) {
+            var self = this;
 
-        self = this;
-        self.Username = AuthService.userName
-        self.bLoggedIn = false;
+            $scope.onRouteSuccess = function () {
 
-        $scope.isRegistered = function() {
-            return AuthService.loggedIn;
-        }
+            }
 
-        $scope.saveFavToDB = propService.saveFavorites;
+            $scope.$on('$routeChangeSuccess', $scope.onRouteSuccess);
 
-        $scope.$on('login-success', function(event, args){
-            self.bLoggedIn = true;
-            self.Username = args.Username;
-        });
+            $scope.$on('fav-counter-update', function(event, oData){
+                propService.favCount = oData.Count;
+                self.favCount = propService.favCount;
+            });
 
-    }]);
+            
+            self.Username = AuthService.userName
+            self.bLoggedIn = false;
+
+            $scope.isRegistered = function () {
+                return AuthService.loggedIn;
+            }
+
+            $scope.saveFavToDB = propService.saveFavorites;
+
+            $scope.$on('login-success', function (event, args) {
+                self.bLoggedIn = true;
+                self.Username = args.Username;
+
+                $http.get(propService.getServiceURL() + '/reg/poi/favlist/count').then(
+                    function (oResponse) {
+                        propService.favCount = oResponse.data.Count;
+                        self.favCount = oResponse.data.Count;
+                    }, function (oErr) {
+                        console.log(oErr);
+                    }
+                )
+
+            });
+
+        }]);

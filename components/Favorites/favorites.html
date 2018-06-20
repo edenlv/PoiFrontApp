@@ -1,0 +1,84 @@
+<div class="mx-4">
+    <h2 class="text-center my-3">{{indxCtrl.Username}}'s Favorite Points of Interest</h2>
+
+    <md-toolbar class="md-hue-1 mx-0 my-4">
+        <div layout="row" class="justify-content-between">
+
+            <div class="d-flex flex-row justify-content-center w-100 mx-5">
+                <md-input-container style="min-width:200px" class="mx-4">
+                    <md-select ng-model="selectedItem" md-selected-text="getSelectedText()">
+                        <md-optgroup label="category">
+                            <md-option ng-value="AllCategories">All Categories</md-option>
+                            <md-option ng-repeat="category in aCategories" ng-value="category">{{category}}</md-option>
+                        </md-optgroup>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container md-no-float class="m-0 d-flex flex-row justify-content-center align-items-center mx-4">
+                    <input ng-model="sf_poiname" placeholder="POI Name">
+                </md-input-container>
+
+                <md-button class="md-primary md-raised mx-4" aria-label="is fav button" ng-click="sortByRating($event)">
+                    <div layout="row">
+                        <div ng-if="sorted" class="mt-2">
+                            <i class="fas fa-sort-down mr-2 ng-hide" style="vertical-align: -0.5rem;font-size:20px;"></i>
+                            <i class="fas fa-sort-up mr-2" style="vertical-align: -0.5rem;font-size:20px;"></i>
+                        </div>
+                        <span style="color:white;">Sort by Rating</span>
+                    </div>
+                </md-button>
+
+            </div>
+
+            <md-toolbar-filler style="background-color:darkgray;width:104px;" layout="row" layout-align="center center">
+                <md-button class="md-primary md-raised" style="color:white;background-color:darkgray" aria-label="is fav button" ng-click="filter()">
+                        <i class="fas fa-filter"></i><span class="mx-2">Filter</span>
+                </md-button>
+            </md-toolbar-filler>
+
+            <md-toolbar-filler style="width:140px;background-color:green;" layout="row" layout-align="center center">
+                    <md-button class="md-primary md-raised" style="color:white;background-color:green;" aria-label="is fav button" ng-click="saveOrder()">
+                            <i class="far fa-save" style="font-size: 18px;"></i><span class="mx-2">Save Order</span>
+                    </md-button>
+                </md-toolbar-filler>
+
+        </div>
+    </md-toolbar>
+    <div class="text-center" style="color:red;font-size:14px;">* Only <b>saved</b> points of interest are shown. If you want to change the order of new ones, you must save to DB first.</div>
+    <table id="favtable" class="table table-hover table-bordered w-100 mt-4" style="border-collapse:collapse;" ng-cloak>
+        <thead>
+            <tr>
+                <th scope="col" style="width:15px"></th>
+                <th scope="col">Order</th>
+                <th scope="col">Category</th>
+                <th scope="col" style="min-width:200px;">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="card in favlist | filter: {Category:catFilter, Title:nameFilter, isFavorite: true} as filtered">
+                <th scope="row" style="width:15px;cursor:pointer;"><i class="fas fa-arrows-alt"></i></th>
+                <td class="ordercol">{{card.Order}}</td>
+                <td>{{card.Category}}</td>
+                <td><a href="" ng-click="openPoiDialog(this)">{{card.Title}}</a></td>
+                <td>{{card.Description}}</td>
+                <td class="text-center">{{card.Rating}}</td>
+                <td class="">
+                    <div class="d-flex flex-row justify-content-center align-items-center">
+                        <md-button class="md-icon-button" ng-if="isRegistered()" aria-label="is fav button" ng-click="deleteFavRow(card)">
+                            <i class="fa fa-trash-alt"></i>
+                        </md-button>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-if="!favlist.length || !filtered.length">
+                <td colspan="7" class="text-center">
+                    No favorites found.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

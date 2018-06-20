@@ -13,7 +13,7 @@ angular.module('citiesApp').controller('homeController',
         $scope.$on('$routeChangeSuccess', $scope.onRouteSuccess);
 
         $scope.openPoiDialog = function(scope){
-            poiDialog.open(scope.card.PID);
+            poiDialog.open(scope.card);
         }
 
     }]);

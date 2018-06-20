@@ -1,44 +1,46 @@
 <div class="mx-4">
-    <h2 class="text-center mt-3">Explore Popular Points of Interest</h2>
+    <h2 class="text-center mt-3">Explore Points of Interest</h2>
 
     <div class="card-deck mt-4 justify-content-center">
 
-        <md-toolbar class="md-hue-1">
+        <md-toolbar class="md-hue-1 mx-4 mb-3">
             <div layout="row" class="justify-content-between">
 
-                <md-input-container class="ml-5">
-                    <md-select ng-model="selectedItem" md-selected-text="getSelectedText()">
-                        <md-optgroup label="category">
-                            <md-option ng-repeat="category in aCategories" ng-value="category">{{category}}</md-option>
-                        </md-optgroup>
-                    </md-select>
-                </md-input-container>
+                <div class="d-flex flex-row justify-content-center w-100 mx-5">
+                    <md-input-container style="min-width:200px" class="mx-4">
+                        <md-select ng-model="selectedItem" md-selected-text="getSelectedText()">
+                            <md-optgroup label="category">
+                                <md-option ng-value="AllCategories">All Categories</md-option>
+                                <md-option ng-repeat="category in aCategories" ng-value="category">{{category}}</md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
 
-                <md-input-container md-no-float class="m-0 d-flex flex-row justify-content-center align-items-center">
-                    <input ng-model="sf_poiname" placeholder="POI Name">
-                </md-input-container>
+                    <md-input-container md-no-float class="m-0 d-flex flex-row justify-content-center align-items-center mx-4">
+                        <input ng-model="sf_poiname" placeholder="POI Name">
+                    </md-input-container>
 
-                <md-button class="md-primary" aria-label="is fav button" ng-click="sortByRating($event)">
-                    <div layout="row">
-                        <div ng-if="sorted" class="mt-2">
-                            <i class="fas fa-sort-down mr-2 ng-hide" style="vertical-align: -0.5rem;font-size:20px;"></i>
-                            <i class="fas fa-sort-up mr-2" style="vertical-align: -0.5rem;font-size:20px;"></i>
+                    <md-button class="md-primary md-raised mx-4" aria-label="is fav button" ng-click="sortByRating($event)">
+                        <div layout="row">
+                            <div ng-if="sorted" class="mt-2">
+                                <i class="fas fa-sort-down mr-2 ng-hide" style="vertical-align: -0.5rem;font-size:20px;"></i>
+                                <i class="fas fa-sort-up mr-2" style="vertical-align: -0.5rem;font-size:20px;"></i>
+                            </div>
+                            <span style="color:white;">Sort by Rating</span>
                         </div>
-                        <span>Sort by Rating</span>
-                    </div>
-
-                </md-button>
+                    </md-button>
+                </div>
 
                 <md-toolbar-filler style="background-color:darkgray;width:104px;" layout="row" layout-align="center center">
-                    <md-button class="md-primary" style="color:white;" aria-label="is fav button" ng-click="filter()">
+                    <md-button class="md-primary md-raised" style="color:white;background-color:darkgray" aria-label="is fav button" ng-click="filter()">
                         Filter
                     </md-button>
                 </md-toolbar-filler>
 
             </div>
         </md-toolbar>
-        <br>
 
+        <br>
 
         <div class="card my-3" ng-repeat="card in allpoi | filter: {Category:catFilter, Title:nameFilter} as filtered" style="min-width:250px;max-width:250px;">
             <img class="card-img-top cardImageCustom" style="height:145px;" ng-src="img/{{card.ImageFileName}}" alt="Card image cap"
@@ -51,15 +53,15 @@
                 <small class="text-muted">Category: {{card.Category}}, Rating: {{card.Rating}}</small>
 
                 <md-button ng-if="isRegistered()" aria-label="is fav button" ng-click="toggleFavBtn($event, card)" ng-class="{'colorYellow': card.isFavorite, 'md-icon-button': true}">
-                        <i class="fa fa-star fa-lg cust"></i>
-                    </md-button>
+                    <i class="fa fa-star fa-lg cust"></i>
+                </md-button>
             </div>
         </div>
     </div>
 
     <div ng-if="!allpoi.length" class="my-3 text-center">Loading...<br><br><i class="fas fa-spinner fa-pulse" style="font-size:50px;"></i></div>
     <div class="my-3 text-center" ng-show="filtered.length === 0">
-        <p>No results found.</p>
+        <p class="font-weight-bold" style="font-size:20px">No results found.</p>
     </div>
 
 </div>

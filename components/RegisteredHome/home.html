@@ -17,10 +17,16 @@
                 </div>
             </div>
 
+
+
             <div ng-if="!lastsavedPoi.length" class="">
                 <h5 class="text-center" style="font-weight:400;">You haven't saved any Points of Interest yet. If you add a POI to favorites it will show here.</h4>
             </div>
 
+        </div>
+
+        <div ng-if="lastsavedPoi.length" class="text-center mt-3" style="font-size:14px;">
+            * Without unsaved changes to database
         </div>
 
 
@@ -48,7 +54,9 @@
         </div>
 
         <div ng-if="!recommendedPoi.length" class="my-3 text-center">Loading...<br><br><i class="fas fa-spinner fa-pulse" style="font-size:50px;"></i></div>
-
+        <div ng-if="!recommendedPoi.length" class="" ng-cloak>
+            <h5 class="text-center" style="font-weight:400;">No recommended Points of Interest for you. Sorry.</h4>
+        </div>
     </div>
 
 </div>

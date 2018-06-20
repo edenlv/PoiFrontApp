@@ -52,12 +52,12 @@
           Views: <span class="badge badge-primary badge-pill">{{card.Views}}</span>
         </div>
 
-        <div class="col-sm text-center" ng-if="isRegistered()">
-          <md-button class="md-primary" style="color:#009bda">Add Review</md-button>
+        <div class="col-sm text-center">
+          <md-button ng-if="isRegistered()" class="md-primary" style="color:#009bda">Add Review</md-button>
         </div>
 
         <div class="col-sm text-right">
-          <md-button ng-if="isRegistered()" aria-label="is fav button" ng-click="toggleFavBtn($event, card)" ng-class="{'colorYellow': card.isFavorite, 'md-icon-button': true}">
+          <md-button ng-if="isRegistered() &amp;&amp; !isFavView" aria-label="is fav button" ng-click="toggleFavBtn($event, card)" ng-class="{'colorYellow': card.isFavorite, 'md-icon-button': true}">
               <i class="fa fa-star fa-lg cust"></i>
           </md-button>
         </div>

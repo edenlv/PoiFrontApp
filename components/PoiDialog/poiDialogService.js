@@ -1,11 +1,11 @@
 angular.module('citiesApp')
-    .service('poiDialog', ['$rootScope', 'propService', '$http', '$mdDialog', 'waitDialog', 'AuthService',
-        function ($rootScope, propService, $http, $mdDialog, waitDialog, AuthService) {
+    .service('poiDialog', ['$rootScope', 'propService', '$http', '$mdDialog', 'waitDialog', 'AuthService', '$location',
+        function ($rootScope, propService, $http, $mdDialog, waitDialog, AuthService, $location) {
 
             var that = this;
 
 
-            that.open = function (sPID) {
+            that.open = function (oPoi) {
 
                 waitDialog.show();
 
@@ -17,25 +17,28 @@ angular.module('citiesApp')
                     multiple: true,
                     onComplete: waitDialog.hide,
                     resolve: {
+
                         poiData: function ($http) {
 
-                            return $http.get(propService.getServiceURL() + 'poi/' + sPID, { ignore: true }).then(
+                            return $http.get(propService.getServiceURL() + 'poi/' + oPoi.PID, { ignore: true }).then(
                                 function (oResponse) {
 
                                     oResponse.data.Rating = oResponse.data.Rating === 0 ? "0%" : (oResponse.data.Rating - 1) * 100 / 4 + "%";
+                                    if (oPoi.Order) oResponse.data.Order = oPoi.Order;
+                                    oResponse.data.isFavorite = oPoi.isFavorite;
                                     console.log(oResponse.data);
-                                    return oResponse.data;
+                                    return $.extend(oPoi, oResponse.data, false);
                                 },
                                 function (oErr) {
 
-                                    console.log("error loading pid " + sPID);
+                                    console.log("error loading pid " + oPoi.PID);
                                 }
                             )
                         },
 
                         poiReviews: function ($http) {
 
-                            return $http.get(propService.getServiceURL() + 'poi/' + sPID + '/lastreviews', { ignore: true }).then(
+                            return $http.get(propService.getServiceURL() + 'poi/' + oPoi.PID + '/lastreviews', { ignore: true }).then(
                                 function (oResponse) {
 
                                     console.log(oResponse.data);
@@ -60,7 +63,7 @@ angular.module('citiesApp')
 
 
 
-            function DialogController($scope, $mdDialog, poiData, poiReviews, waitDialog, propService) {
+            function DialogController($scope, $mdDialog, poiData, poiReviews, waitDialog, propService, $location) {
 
                 console.log('controller')
 
@@ -69,6 +72,8 @@ angular.module('citiesApp')
                 $scope.isRegistered = function () {
                     return AuthService.loggedIn;
                 }
+
+                $scope.isFavView = $location.path().includes('favorites');
 
                 $scope.poiReviews = poiReviews;
 
@@ -90,9 +95,6 @@ angular.module('citiesApp')
                 $scope.stars = 0;
 
             }
-
-
-
 
         }]);
 

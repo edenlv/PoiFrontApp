@@ -6,7 +6,8 @@ angular.module('citiesApp')
             $scope.toggleFavBtn = propService.toggleFavBtn;
 
             $scope.openPoiDialog = function(scope){
-                poiDialog.open(scope.card.PID);
+                poiDialog.open(scope.card);
+                console.log(scope.card);
             }
 
             $scope.isRegistered = function () {
@@ -16,6 +17,14 @@ angular.module('citiesApp')
             $scope.onRouteSuccess = function () {
                 $http.get(propService.serviceUrl + 'poi').then(
                     function (response) {
+                        //checks if the user toggled favorite in another place in the app
+                        response.data.forEach(
+                            (elem, idx) => {
+                                var oPoi = propService.has(elem.PID)
+                                if (oPoi) elem.isFavorite = oPoi.isFavorite;
+                            }
+                        );
+                        
                         $scope.allpoi = response.data;
                     }
                 )
@@ -55,7 +64,7 @@ angular.module('citiesApp')
 
             $scope.filter = function(){
                 $scope.nameFilter = $scope.sf_poiname;
-                $scope.catFilter = $scope.selectedItem;
+                $scope.catFilter = $scope.catFilter==='All Categories' ? '' : $scope.selectedItem;
             }
 
             $scope.sf_poiname = undefined;

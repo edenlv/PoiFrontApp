@@ -39,6 +39,10 @@ app.config(['$locationProvider', '$routeProvider', '$httpProvider',
                 templateUrl: 'components/ForgotPW/forgotPW.html',
                 controller: 'forgotpwCtrl'
             })
+            .when('/favorites', {
+                templateUrl: 'components/Favorites/favorites.html',
+                controller: 'favoritesCtrl'
+            })
             .otherwise({ redirectTo: '/' });
     }]);
 
@@ -57,7 +61,7 @@ app.config(['$locationProvider', '$routeProvider', '$httpProvider',
 app.run(
     function ($rootScope, $location, AuthService) {
         $rootScope.$on('$routeChangeStart', function (event, next, current) {
-            var registeredOnly = ['/reghome']
+            var registeredOnly = ['/reghome', '/favorites']
             var unregOnly = ['/', '/login', '/register'];
 
             if (!AuthService.loggedIn) {
