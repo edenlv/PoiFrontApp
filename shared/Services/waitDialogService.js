@@ -23,7 +23,7 @@ app.factory('waitDialog', ['$mdDialog', function ($mdDialog) {
         hide: () => {
 
                 if ($('#myDialog').css('visibility') !== 'hidden')
-                    var pDialog = $mdDialog.hide([oService.getDialog()]);
+                    return $mdDialog.hide([oService.getDialog()]);
                 //     // if (pDialog) pDialog.then(() => {}).catch(()=>{});
 
 

@@ -19,6 +19,10 @@ angular.module('citiesApp')
             self.Username = AuthService.userName
             self.bLoggedIn = false;
 
+            $scope.logout = function(){
+                AuthService.logout();
+            }
+
             $scope.isRegistered = function () {
                 return AuthService.loggedIn;
             }
@@ -29,7 +33,7 @@ angular.module('citiesApp')
                 self.bLoggedIn = true;
                 self.Username = args.Username;
 
-                $http.get(propService.getServiceURL() + '/reg/poi/favlist/count').then(
+                $http.get(propService.getServiceURL() + 'reg/poi/favlist/count').then(
                     function (oResponse) {
                         propService.favCount = oResponse.data.Count;
                         self.favCount = oResponse.data.Count;
@@ -38,6 +42,12 @@ angular.module('citiesApp')
                     }
                 )
 
+            });
+
+            $scope.$on('logout', function(event, args){
+                self.bLoggedIn = false;
+                self.Username = '';
+                self.favCount = '';
             });
 
         }]);

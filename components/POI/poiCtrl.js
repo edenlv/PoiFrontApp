@@ -22,6 +22,8 @@ angular.module('citiesApp')
                             (elem, idx) => {
                                 var oPoi = propService.has(elem.PID)
                                 if (oPoi) elem.isFavorite = oPoi.isFavorite;
+
+                                elem.Rating = elem.Rating === 0 ? "0%" : ((elem.Rating - 1) * 100 / 4).toFixed(2) + "%";
                             }
                         );
                         

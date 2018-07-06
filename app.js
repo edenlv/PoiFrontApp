@@ -10,6 +10,7 @@ app.config(['$locationProvider', '$routeProvider', '$httpProvider',
         $locationProvider.hashPrefix('');
 
         $httpProvider.interceptors.push('httpRequestInterceptor');
+        $httpProvider.interceptors.push('httpTokenInterceptor');
 
         $routeProvider.when('/', {
             templateUrl: 'components/Home/home.html',
@@ -60,6 +61,8 @@ app.config(['$locationProvider', '$routeProvider', '$httpProvider',
 
 app.run(
     function ($rootScope, $location, AuthService, localStorageService) {
+        AuthService.checkLogin();
+
         $rootScope.$on('$routeChangeStart', function (event, next, current) {
             var registeredOnly = ['/reghome', '/favorites']
             var unregOnly = ['/', '/login', '/register'];
@@ -77,7 +80,7 @@ app.run(
             }
         })
 
-        AuthService.checkLogin();
+        
     }
 )
 
@@ -101,6 +104,28 @@ app.factory('httpRequestInterceptor', ['$injector', function ($injector) {
         responseError: fnHide
 
     };
+}]);
+
+app.factory('httpTokenInterceptor', ['$injector', function($injector){
+
+
+    return {
+        response: function(req){
+             if (req.config.url.includes('azurewebsites')) console.log(req);
+            return req;
+        },
+        responseError: function(req){
+            if (req.config.url.includes($injector.get('propService').getServiceURL())) {
+                if (req.status != 200 && req.data.message.includes('token')){
+                    $injector.get('AuthService').logout();
+                    if ($injector.get('$location').path() !== '/'){
+                        $injector.get('$location').path('/');
+                    }
+                }
+            }
+            return req;
+        }
+    }
 }]);
 
 

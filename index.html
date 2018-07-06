@@ -1,141 +1,174 @@
 <html ng-app="citiesApp">
-
-<head>
-    <title>Cities App</title>
-    <script>
-        FontAwesomeConfig = { searchPseudoElements: true };
-    </script>
-
-
-    <!-- Angular Material requires Angular.js Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
-
-    <!-- Angular Material Library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
-
-
-    <script src="node_modules/angular-local-storage/dist/angular-local-storage.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
-    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
-    <script defer src="http://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
-        crossorigin="anonymous"></script>
-
-
-
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
-
-    <!-- jQuery UI plugin-->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-</head>
-
-<body ng-controller="indexController as indxCtrl">
-
-    <div class="innerBody">
-        <div class="shell GlobalOuterBackground">
-            <div class="shellCentralBox">
-                <div class="shellContent shellContentBG">
-                    <div id="splitApp" class="splitApp">
-
-                        <header>
-                            <div class="d-flex p-1 flex-row justify-content-between align-items-center bar">
-
-                                <nav class="navbar navbar-expand-lg navbar-light h-100">
-                                    <a class="navbar-brand" href="#">POI App</a>
-                                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                                        aria-expanded="false" aria-label="Toggle navigation">
-                                                  <span class="navbar-toggler-icon"></span>
-                                                </button>
-
-                                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                        <ul class="navbar-nav mr-auto">
-                                            <li class="nav-item">
-                                                <a class="nav-link mx-2" href="#/">Home</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link mx-2" href="#/poi">Explore</a>
-                                            </li>
-                                            <li class="nav-item" ng-show="isRegistered()" ng-cloak>
-                                                <a class="nav-link mx-2" href="#/favorites">
-                                                    <span>Favorites</span>
-                                                    <span class="badge badge-primary badge-pill">{{indxCtrl.favCount}}</span>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item" ng-show="!isRegistered()" ng-cloak>
-                                                <a class="nav-link mx-2" href="#/register">Register</a>
-                                            </li>
-                                            <li class="nav-item" ng-show="!isRegistered()" ng-cloak>
-                                                <a class="nav-link mx-2" href="#/login">Login</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link mx-2" href="#/about">About</a>
-                                            </li>
-                                        </ul>
-
-                                    </div>
-                                </nav>
-
-                                <button ng-click="saveFavToDB()" type="button" ng-show="isRegistered()" class="btn btn-sm btn-secondary" ng-cloak>Save Favorites to DB</button>
-
-                                <div class="d-flex mr-3 justify-content-center" ng-cloak>
-                                    <div ng-show="indxCtrl.bLoggedIn">Hello, {{indxCtrl.Username}}</div>
-                                    <div ng-show="!indxCtrl.bLoggedIn">Hello, Guest</div>
+    
+    <head>
+        <title>Cities App</title>
+        <script>
+            FontAwesomeConfig = { searchPseudoElements: true };
+        </script>
+    
+    
+        <!-- Angular Material requires Angular.js Libraries -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+    
+        <!-- Angular Material Library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+    
+    
+        <script src="node_modules/angular-local-storage/dist/angular-local-storage.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+"
+            crossorigin="anonymous"></script>
+    
+    
+    
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+    
+        <!-- jQuery UI plugin-->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+        <!-- LeafletJS map plugin -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+            crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="
+            crossorigin=""></script>
+    
+            <!-- Mapbox CDN -->
+            <script src='https://api.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.js'></script>
+            <link href='https://api.mapbox.com/mapbox-gl-js/v0.46.0/mapbox-gl.css' rel='stylesheet' />
+    
+    </head>
+    
+    <body ng-controller="indexController as indxCtrl">
+    
+        <div class="innerBody">
+            <div class="shell GlobalOuterBackground">
+                <div class="shellCentralBox">
+                    <div class="shellContent shellContentBG">
+                        <div id="splitApp" class="splitApp">
+    
+                            <header>
+                                <div class="d-flex p-1 flex-row justify-content-between align-items-center bar">
+    
+                                    <nav class="navbar navbar-expand-lg navbar-light h-100">
+                                        <a class="navbar-brand" href="#">POI App</a>
+                                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                            aria-expanded="false" aria-label="Toggle navigation">
+                                                      <span class="navbar-toggler-icon"></span>
+                                                    </button>
+    
+                                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                            <ul class="navbar-nav mr-auto">
+                                                <li class="nav-item">
+                                                    <a class="nav-link mx-2" href="#/">Home</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link mx-2" href="#/poi">Explore</a>
+                                                </li>
+                                                <li class="nav-item" ng-show="isRegistered()" ng-cloak>
+                                                    <a class="nav-link mx-2" href="#/favorites">
+                                                        <span>Favorites</span>
+                                                        <span class="badge badge-primary badge-pill">{{indxCtrl.favCount}}</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item" ng-show="!isRegistered()" ng-cloak>
+                                                    <a class="nav-link mx-2" href="#/register">Register</a>
+                                                </li>
+                                                <li class="nav-item" ng-show="!isRegistered()" ng-cloak>
+                                                    <a class="nav-link mx-2" href="#/login">Login</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link mx-2" href="#/about">About</a>
+                                                </li>
+                                            </ul>
+    
+                                        </div>
+                                    </nav>
+    
+                                    <button ng-click="saveFavToDB()" type="button" ng-show="isRegistered()" class="btn btn-sm btn-light d-flex flex-row" ng-cloak>
+                                        <i class="fas fa-star" style="font-size:22px;color:yellow;margin: 0px 5px;"></i>
+                                        <i class="far fa-save" style="font-size:24px;color:grey;margin: 0px 5px;"></i>
+                                        <md-tooltip md-delay="0">
+                                            Save Favorite POIs to Database
+                                          </md-tooltip>
+                                    </button>
+    
+    
+                                    <!--<div ng-show="indxCtrl.bLoggedIn">Hello, {{indxCtrl.Username}}</div>
+                                        <div ng-show="!indxCtrl.bLoggedIn">Hello, Guest</div>
+                                        -->
+                                    <md-menu md-position-mode="target-right target" md-offset="0 50" ng-show="indxCtrl.bLoggedIn" ng-cloak>
+                                        <md-button aria-label="Open demo menu" ng-click="$mdMenu.open($event)">
+                                            <span>Hello, {{indxCtrl.Username}}</span>
+                                            <div class="fa fa-chevron-down" style="margin-right:0.5rem; margin-left:0.5rem; margin-top: 0.25rem;"></div>
+                                        </md-button>
+                                        <md-menu-content width="3">
+                                            <md-menu-item>
+                                                <md-button ng-click="logout($event)">
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <i class="fas fa-power-off mr-3" style="color:brown;"></i>
+                                                        <p flex> Logout </p>
+                                                    </div>
+                                                </md-button>
+                                            </md-menu-item>
+                                        </md-menu-content>
+                                    </md-menu>
+    
                                 </div>
-                            </div>
-                        </header>
-
-                        <div class="page" ng-view></div>
-
+                            </header>
+    
+                            <div class="page" ng-view></div>
+    
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-
-    <!-- pre-rendered dialog for data loading purposes -->
-    <div style="visibility: hidden">
-        <div class="md-dialog-container text-center" id="myDialog">
-            <md-dialog layout-padding class="justify-content-center align-items-center">
-                Please wait... <i class="fas fa-spinner fa-pulse" style="font-size:40px;"></i>
-            </md-dialog>
+    
+    
+        <!-- pre-rendered dialog for data loading purposes -->
+        <div style="visibility: hidden">
+            <div class="md-dialog-container text-center" id="myDialog">
+                <md-dialog layout-padding class="justify-content-center align-items-center">
+                    Please wait... <i class="fas fa-spinner fa-pulse" style="font-size:40px;"></i>
+                </md-dialog>
+            </div>
         </div>
-    </div>
-
-
-    <link rel="stylesheet" href="css/style.css">
-    <script src="app.js"></script>
-    <script src="indexController.js"></script>
-
-    <!-- Controllers -->
-    <script src="components/About/aboutController.js"></script>
-    <script src="components/Login/login.js"></script>
-    <script src="components/POI/poiCtrl.js"></script>
-    <script src="components/Home/home.js"></script>
-    <script src="components/Register/register.js"></script>
-    <script src="components/RegisteredHome/home.js"></script>
-    <script src="components/ForgotPW/forgotPW.js"></script>
-    <script src="components/Favorites/favoritesCtrl.js"></script>
-
-    <!-- Services -->
-    <script src="shared/Services/waitDialogService.js"></script>
-    <script src="shared/Services/authService.js"></script>
-    <script src="shared/Services/propService.js"></script>
-    <script src="shared/Services/validatorService.js"></script>
-    <script src="components/PoiDialog/poiDialogService.js"></script>
-    <script src="components/ReviewDialog/reviewService.js"></script>
-
-</body>
-
-</html>
+    
+    
+        <link rel="stylesheet" href="css/style.css">
+        <script src="app.js"></script>
+        <script src="indexController.js"></script>
+    
+        <!-- Controllers -->
+        <script src="components/About/aboutController.js"></script>
+        <script src="components/Login/login.js"></script>
+        <script src="components/POI/poiCtrl.js"></script>
+        <script src="components/Home/home.js"></script>
+        <script src="components/Register/register.js"></script>
+        <script src="components/RegisteredHome/home.js"></script>
+        <script src="components/ForgotPW/forgotPW.js"></script>
+        <script src="components/Favorites/favoritesCtrl.js"></script>
+    
+        <!-- Services -->
+        <script src="shared/Services/waitDialogService.js"></script>
+        <script src="shared/Services/authService.js"></script>
+        <script src="shared/Services/propService.js"></script>
+        <script src="shared/Services/validatorService.js"></script>
+        <script src="components/PoiDialog/poiDialogService.js"></script>
+        <script src="components/ReviewDialog/reviewService.js"></script>
+    
+    </body>
+    
+    </html>

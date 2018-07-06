@@ -15,39 +15,45 @@ angular.module('citiesApp').controller('regHomeController',
                 $http.get(propService.getServiceURL() + 'reg/poi/recommended').then(
                     function (response) {
 
-                        //checks if the user toggled favorite in another place in the app
-                        response.data.forEach(
-                            (elem, idx) => {
-                                var oPoi = propService.has(elem.PID)
-                                if (oPoi) elem.isFavorite = oPoi.isFavorite;
-                            }
-                        );
+                        $scope.loaded = true;
 
-                        $scope.recommendedPoi = response.data;
+                        //checks if the user toggled favorite in another place in the app
+                        if (response.data.length){
+                            response.data.forEach(
+                                (elem, idx) => {
+                                    var oPoi = propService.has(elem.PID)
+                                    if (oPoi) elem.isFavorite = oPoi.isFavorite;
+
+                                    elem.Rating = elem.Rating === 0 ? "0%" : ((elem.Rating - 1) * 100 / 4).toFixed(2) + "%";
+                                }
+                            );
+                            $scope.recommendedPoi = response.data;
+                        }
+
+                        
                     },
 
                     function (err) {
-                        console.log(err)
+                        // console.log(err)
                     }
                 )
 
                 $http.get(propService.getServiceURL() + 'reg/poi/lastsaved').then(
                     function (response) {
 
-                        //checks if the user toggled favorite in another place in the app
+                        
+                        if (response.data.length){
                         response.data.forEach(
                             (elem, idx) => {
+                                //checks if the user toggled favorite in another place in the app
                                 var oPoi = propService.has(elem.PID);
                                 if (oPoi) elem.isFavorite = oPoi.isFavorite;
                                 // if (!elem.isFavorite) response.data.splice(response.data.indexOf(elem), 1);
+
+                                elem.Rating = elem.Rating === 0 ? "0%" : ((elem.Rating - 1) * 100 / 4).toFixed(2) + "%";
                             }
                         );
-
-                        // response.data = response.data.filter(
-                        //     (currPoi) => {
-                        //         return currPoi.isFavorite;
-                        //     }
-                        // )
+                    }
 
                         var recents = propService.getRecentFavs();
                         if (recents.length) {

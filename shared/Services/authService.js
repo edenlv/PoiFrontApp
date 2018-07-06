@@ -1,11 +1,12 @@
 
 
 angular.module('citiesApp')
-    .service('AuthService', [ '$rootScope','$location','propService', '$http', 'waitDialog', 'localStorageService', '$timeout',
-    function ($rootScope, $location, propService, $http, waitDialog, localStorageService, $timeout) {
+    .service('AuthService', [ '$rootScope','$location','propService', '$http', 'waitDialog', 'localStorageService', '$timeout', '$route',
+    function ($rootScope, $location, propService, $http, waitDialog, localStorageService, $timeout, $route) {
         console.log('init AuthService')
 
         var that = this;
+        window.auths = this;
         this.Username='';
         this.loggedIn = false;
         this.token = '';
@@ -55,10 +56,23 @@ angular.module('citiesApp')
         // });
         // }
 
+        this.logout = function(){
+            localStorageService.remove('user');
+            localStorageService.remove('token');
+            that.Username = '';
+            that.loggedIn = false;
+            that.token = '';
+            $rootScope.$broadcast('logout');
+            $location.path('/');
+        }
+
         this.checkLogin = function(){
             var token = localStorageService.get('token');
             var user = localStorageService.get('user');
             if (token && user){
+                that.loggedIn = true;
+                that.setToken(token);
+                that.setUsername(user);
                 $timeout(()=>{this.onLoginSuccess(token, user)},0);
             }
         }
@@ -67,7 +81,8 @@ angular.module('citiesApp')
             that.loggedIn = true;
             that.setToken(sToken);
             that.setUsername(sUser);
-            $location.path('reghome');
+            if ($location.path()==='/login') $location.path('/reghome');
+            else $route.reload();
             $rootScope.$broadcast('login-success', { Username: sUser })
         }
 

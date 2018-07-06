@@ -21,7 +21,8 @@
 
         <h5 class="mb-3">Latest Reviews</h5>
         <p ng-if="!poiReviews.length">No reviews on {{card.Title}} yet.</p>
-        <table ng-if="poiReviews.length" class="table">
+
+        <table ng-if="poiReviews.length" class="table" style="border-bottom: 1px solid lightgrey;">
           <thead class="thead-light">
             <tr>
               <th scope="col">#</th>
@@ -34,11 +35,14 @@
             <tr ng-repeat="review in poiReviews">
               <th scope="row">{{$index+1}}</th>
               <td>{{review.ReviewText}}<span ng-if="!review.ReviewText">-</span></td>
-              <td>{{review.Rating}}</td>
+              <td>{{review.Rating}}<span ng-if="!review.Rating || review.Rating==0">-</span></td>
               <td>{{review.DateFormatted}}</td>
             </tr>
           </tbody>
         </table>
+        
+        <h5 class="mb-3">Browse Location</h5>
+        <div id="map" style="height:400px;"></div>
       </div>
     </md-dialog-content>
 

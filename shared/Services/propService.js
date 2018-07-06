@@ -1,5 +1,5 @@
 angular.module('citiesApp')
-    .factory('propService', ['$location', '$http', 'waitDialog', '$route', '$rootScope', function ($location, $http, waitDialog, $route, $rootScope) {
+    .factory('propService', ['$location', '$http', 'waitDialog', '$route', '$rootScope', '$mdDialog', function ($location, $http, waitDialog, $route, $rootScope, $mdDialog) {
         var oService = {
 
             aFavSet: [],
@@ -11,9 +11,9 @@ angular.module('citiesApp')
                     }
                     else {
                         oService.aFavSet.push(oPoi);
-                    } 
+                    }
 
-                    $rootScope.$broadcast('fav-counter-update', { Count: oService.favCount+1 });
+                    $rootScope.$broadcast('fav-counter-update', { Count: oService.favCount + 1 });
                 }
             },
 
@@ -40,12 +40,12 @@ angular.module('citiesApp')
                         oService.aFavSet.push(oPoi);
                     }
 
-                    $rootScope.$broadcast('fav-counter-update', { Count: oService.favCount-1 });
+                    $rootScope.$broadcast('fav-counter-update', { Count: oService.favCount - 1 });
                 }
             },
 
-            remove: function(sPID){
-                oService.aFavSet.splice(oService.aFavSet.indexOf(oService.has(sPID)),1);
+            remove: function (sPID) {
+                oService.aFavSet.splice(oService.aFavSet.indexOf(oService.has(sPID)), 1);
             },
 
             getRecentFavs: function () {
@@ -64,8 +64,23 @@ angular.module('citiesApp')
             saveFavorites: function () {
                 console.log($location);
                 if (oService.aFavSet.length === 0) return;
-                $http.post(oService.getServiceURL() + '/reg/poi/setfavs', oService.aFavSet).then(
+                waitDialog.show()
+                return $http.post(oService.getServiceURL() + '/reg/poi/setfavs', oService.aFavSet).then(
                     function (oResponse) {
+                        if (oResponse.data.success)
+                            waitDialog.hide().finally(() => {
+                                $mdDialog.show(
+                                    $mdDialog.alert()
+                                        .parent(angular.element(document.querySelector('body')))
+                                        .clickOutsideToClose(true)
+                                        .title('Successful!')
+                                        .textContent(oResponse.data.message)
+                                        .ariaLabel('Sucessful')
+                                        .ok('OK')
+                                );
+
+                            })
+
                         console.log(oResponse);
 
                     },
@@ -97,7 +112,7 @@ angular.module('citiesApp')
                 )
             },
 
-            serviceUrl: 'http://poinodeapp.azurewebsites.net/',
+            serviceUrl: 'https://poinodeapp.azurewebsites.net/',
             // serviceUrl: 'http://localhost:8080/',
 
             getServiceURL: function () {

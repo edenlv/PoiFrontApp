@@ -35,24 +35,40 @@ angular.module('citiesApp')
                 }
 
                 $scope.addReview = function () {
-                    if (!$scope.stars && $scope.reviewText === '') return;
+                    if (!$scope.stars && $scope.reviewText === '') $scope.cancel();
                     else {
                         waitDialog.show();
 
+                        var fnEnd = (res) => { waitDialog.hide(); $scope.cancel(); $rootScope.$broadcast('review-added');};
+
                         function savereview() {
                             $http.post(propService.getServiceURL() + 'reg/poi/addreviewtext', { PID: PID, ReviewText: $scope.reviewText })
-                                .then(
-                                (res) => { waitDialog.hide(); $scope.cancel(); $rootScope.$broadcast('review-added');}
-                                );
+                                .then(fnEnd);
                         }
 
 
-                        if ($scope.stars) {
-                            var promise1 = $http.post(propService.getServiceURL() + 'reg/poi/addrating', { PID: PID, Rating: $scope.stars }).then((res) => { return res.data; })
+                        // if ($scope.stars) {
+                            
+                        // } else {
+                        //     savereview();
+                        // }
 
+
+
+                        if ($scope.stars && $scope.reviewText){
+
+                            var promise1 = $http.post(propService.getServiceURL() + 'reg/poi/addrating', { PID: PID, Rating: $scope.stars });
                             promise1.then(savereview);
-                        } else {
+
+                        } else if ($scope.stars){
+
+                            $http.post(propService.getServiceURL() + 'reg/poi/addrating', { PID: PID, Rating: $scope.stars })
+                                .then(fnEnd);
+
+                        } else if ($scope.reviewText){
+
                             savereview();
+
                         }
 
                     }

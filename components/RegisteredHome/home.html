@@ -37,8 +37,8 @@
     <div class="mx-4">
         <h2 class="text-center">Recommended Points of Interest</h2>
 
-        <div class="card-deck mt-4">
-            <div class="card" ng-repeat="card in recommendedPoi">
+        <div class="card-deck mt-4 justify-content-center">
+            <div class="card" style="max-width:376px;" ng-repeat="card in recommendedPoi">
                 <img class="card-img-top cardImageCustom" ng-src="img/{{card.ImageFileName}}" alt="Card image cap" ng-click="openPoiDialog(this)">
                 <div class="card-body">
                     <a class="card-title poiTitle" href="" ng-click="openPoiDialog(this)">{{card.Title}}</a>
@@ -53,8 +53,8 @@
             </div>
         </div>
 
-        <div ng-if="!recommendedPoi.length" class="my-3 text-center">Loading...<br><br><i class="fas fa-spinner fa-pulse" style="font-size:50px;"></i></div>
-        <div ng-if="!recommendedPoi.length" class="" ng-cloak>
+        <div ng-if="!recommendedPoi.length &amp;&amp; !loaded" class="my-3 text-center">Loading...<br><br><i class="fas fa-spinner fa-pulse" style="font-size:50px;"></i></div>
+        <div ng-if="!recommendedPoi.length &amp;&amp; loaded" class="" ng-cloak>
             <h5 class="text-center" style="font-weight:400;">No recommended Points of Interest for you. Sorry.</h4>
         </div>
     </div>

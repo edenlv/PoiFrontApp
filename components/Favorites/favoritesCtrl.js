@@ -1,7 +1,7 @@
 angular.module('citiesApp')
     .controller('favoritesCtrl',
-    ['$scope', '$http', 'propService', '$mdDialog', 'poiDialog', 'AuthService', '$timeout', 'orderByFilter',
-        function ($scope, $http, propService, $mdDialog, poiDialog, AuthService, $timeout, orderBy) {
+    ['$scope', '$http', 'propService', '$mdDialog', 'poiDialog', 'AuthService', '$timeout', 'orderByFilter', 'waitDialog',
+        function ($scope, $http, propService, $mdDialog, poiDialog, AuthService, $timeout, orderBy, waitDialog) {
 
 
             $scope.openPoiDialog = function (scope) {
@@ -9,7 +9,7 @@ angular.module('citiesApp')
             }
 
             $scope.getRowOrder = function () {
-
+                if (!$scope.favlist.length) return [];
                 $scope.favlist.sort((a, b) => {
                     return a.Order - b.Order
                 });
@@ -30,15 +30,25 @@ angular.module('citiesApp')
                     function (oResponse) {
                         var favOrders = propService.getFavOrders();
 
-                        oResponse.data.forEach(
-                            (elem, idx) => {
+                        if (oResponse.data.length) {
+                            if (propService.aFavSet.length) oResponse.data = oResponse.data.concat(propService.aFavSet);
 
-                                if (!favOrders.length) elem.Order = idx + 1;
-                                else elem.Order = favOrders.indexOf(elem.PID) + 1;
-                                elem.isFavorite = true;
-                            }
-                        );
-                        $scope.favlist = oResponse.data;
+                            oResponse.data.forEach(
+                                (elem, idx) => {
+
+                                    if (!favOrders.length) elem.Order = idx + 1;
+                                    else elem.Order = favOrders.indexOf(elem.PID) + 1;
+                                    elem.isFavorite = true;
+
+                                    if (!elem.Rating.toString().includes('%')) elem.Rating = elem.Rating === 0 ? "0%" : ((elem.Rating - 1) * 100 / 4).toFixed(2) + "%";
+                                }
+                            );
+
+                            
+                            $scope.favlist = oResponse.data;
+                            
+                        }
+
                         console.log($scope.favlist);
 
                         if (!favOrders.length) propService.setFavOrders($scope.getRowOrder());
@@ -64,10 +74,15 @@ angular.module('citiesApp')
             }
 
             $scope.deleteFavRow = function (card) {
-                $scope.favlist.splice($scope.favlist.indexOf(card), 1);
-                card.isFavorite = false;
+                var newFavList = [];
+                angular.forEach($scope.favlist, function(c){
+                    if (c!==card) newFavList.push($.extend({}, c, true));
+                });
+                $scope.favlist = newFavList;
+                $scope.filtered = $scope.newFavList;
+                card.isFavorite = false
                 propService.delFromFav(card);
-                $scope.updateRowOrder();
+                $timeout($scope.updateRowOrder,500);
             }
 
             $("#favtable tbody").sortable({
@@ -115,17 +130,37 @@ angular.module('citiesApp')
             $scope.sf_poiname = undefined;
 
             $scope.saveOrder = function () {
-                var orders = $scope.getRowOrder();
-                $http.post(propService.getServiceURL() + '/reg/poi/setfavorder', orders)
-                    .then(
-                    function (oResponse) {
-                        console.log(oResponse.data);
+                waitDialog.show();
 
-                    },
-                    function (oErr) {
-                        console.log(oErr);
-                    }
-                    )
+                if (propService.aFavSet.length) {
+                    propService.saveFavorites(reorder);
+                } else reorder();
+
+                function reorder() {
+                    var orders = $scope.getRowOrder();
+                    $http.post(propService.getServiceURL() + 'reg/poi/setfavorder', orders)
+                        .then(
+                        function (oResponse) {
+                            if (oResponse.data.success)
+                                waitDialog.hide().finally(() => {
+                                    $mdDialog.show(
+                                        $mdDialog.alert()
+                                            .parent(angular.element(document.querySelector('body')))
+                                            .clickOutsideToClose(true)
+                                            .title('Successful!')
+                                            .textContent('Favorites and favorites order have been saved.')
+                                            .ariaLabel('Sucessful')
+                                            .ok('OK')
+                                    );
+
+                                })
+
+                        },
+                        function (oErr) {
+                            console.log(oErr);
+                        }
+                        )
+                }
             }
 
 

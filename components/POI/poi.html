@@ -3,12 +3,12 @@
 
     <div class="card-deck mt-4 justify-content-center">
 
-        <md-toolbar class="md-hue-1 mx-4 mb-3">
+        <md-toolbar class="mx-4 mb-3" style="background:#cad2da;">
             <div layout="row" class="justify-content-between">
 
                 <div class="d-flex flex-row justify-content-center w-100 mx-5">
                     <md-input-container style="min-width:200px" class="mx-4">
-                        <md-select ng-model="selectedItem" md-selected-text="getSelectedText()">
+                        <md-select ng-model="selectedItem" md-selected-text="getSelectedText()" class="customInput">
                             <md-optgroup label="category">
                                 <md-option ng-value="AllCategories">All Categories</md-option>
                                 <md-option ng-repeat="category in aCategories" ng-value="category">{{category}}</md-option>
@@ -17,25 +17,30 @@
                     </md-input-container>
 
                     <md-input-container md-no-float class="m-0 d-flex flex-row justify-content-center align-items-center mx-4">
-                        <input ng-model="sf_poiname" placeholder="POI Name">
+                        <input ng-model="sf_poiname" placeholder="POI Name" class="customInput">
                     </md-input-container>
 
-                    <md-button class="md-primary md-raised mx-4" aria-label="is fav button" ng-click="sortByRating($event)">
+                    
+                </div>
+
+                <div class="d-flex flex-row justify-content-center align-items-center mr-5">
+                    <md-button class="md-primary md-raised mx-4" aria-label="is fav button" ng-click="sortByRating($event)" style="height:40px;">
                         <div layout="row">
-                            <div ng-if="sorted" class="mt-2">
+
+                            <span style="color:white;">Sort by Rating</span>
+                            <div ng-if="sorted" class="mt-2 ml-2">
                                 <i class="fas fa-sort-down mr-2 ng-hide" style="vertical-align: -0.5rem;font-size:20px;"></i>
                                 <i class="fas fa-sort-up mr-2" style="vertical-align: -0.5rem;font-size:20px;"></i>
                             </div>
-                            <span style="color:white;">Sort by Rating</span>
+
                         </div>
                     </md-button>
-                </div>
 
-                <md-toolbar-filler style="width:104px;" layout="row" layout-align="center center">
-                    <md-button class="md-primary md-raised" style="color:white;background-color:darkgray" aria-label="is fav button" ng-click="filter()">
+                    <md-button class="md-primary md-raised" style="color:white;background-color:darkgray;height:40px;" aria-label="is fav button"
+                        ng-click="filter()">
                         Filter
                     </md-button>
-                </md-toolbar-filler>
+                </div>
 
             </div>
         </md-toolbar>
@@ -50,8 +55,10 @@
                 <p class="card-text" style="font-size:14px;">{{card.Description}}</p>
             </div>
             <div class="card-footer" layout="row" layout-align="space-between center">
-                <small class="text-muted">Category: {{card.Category}}, Rating: {{card.Rating}}</small>
-
+                <div layout="column" align="center start">
+                    <small class="text-muted">Category: {{card.Category}}</small>
+                    <small class="text-muted">Rating: {{card.Rating}}</small>
+                </div>
                 <md-button ng-if="isRegistered()" aria-label="is fav button" ng-click="toggleFavBtn($event, card)" ng-class="{'colorYellow': card.isFavorite, 'md-icon-button': true}">
                     <i class="fa fa-star fa-lg cust"></i>
                 </md-button>
