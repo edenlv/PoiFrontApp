@@ -1,3 +1,7 @@
+Both NodeJS and AngularJS apps were uploaded to Azure.
+Back-end: https://poinodeapp.azurewebsites.net/
+Front-end: https://poiapp.azurewebsites.net/
+
 Login information:
 
 Username: aaa
