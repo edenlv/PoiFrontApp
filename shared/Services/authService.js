@@ -1,5 +1,3 @@
-
-
 angular.module('citiesApp')
     .service('AuthService', [ '$rootScope','$location','propService', '$http', 'waitDialog', 'localStorageService', '$timeout', '$route',
     function ($rootScope, $location, propService, $http, waitDialog, localStorageService, $timeout, $route) {
@@ -34,27 +32,6 @@ angular.module('citiesApp')
             else
                 console.log('Failed to write token to LocalStorage');
         }
- 
-        // this.init = function(){
-        //     return new Promise(function (resolve, reject){
-        //     var tok = localStorageService.get('token');
-
-        //     if (tok) {
-        //         $http.get(that.serverUrl + '/reg/me').then(
-        //             function (response){
-        //                 that.login(tok, response.Username);
-        //                 resolve();
-        //             },
-        //             function (eResponse){
-        //                 that.tok = '';
-        //                 reject();
-                        
-        //             }
-        //         )
-        //     }
-
-        // });
-        // }
 
         this.logout = function(){
             localStorageService.remove('user');

@@ -2,6 +2,8 @@ angular.module('citiesApp')
     .factory('propService', ['$location', '$http', 'waitDialog', '$route', '$rootScope', '$mdDialog', function ($location, $http, waitDialog, $route, $rootScope, $mdDialog) {
         var oService = {
 
+            serviceUrl: 'https://poinodeapp.azurewebsites.net/',
+
             aFavSet: [],
 
             addToFav: function (oPoi) {
@@ -112,7 +114,7 @@ angular.module('citiesApp')
                 )
             },
 
-            serviceUrl: 'https://poinodeapp.azurewebsites.net/',
+            
             // serviceUrl: 'http://localhost:8080/',
 
             getServiceURL: function () {

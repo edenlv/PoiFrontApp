@@ -26,7 +26,7 @@ angular.module('citiesApp')
                             return $http.get(propService.getServiceURL() + 'poi/' + oPoi.PID, { ignore: true }).then(
                                 function (oResponse) {
 
-                                    oResponse.data.Rating = oResponse.data.Rating === 0 ? "0%" : ((oResponse.data.Rating - 1) * 100 / 4).toFixed(2) + "%";
+                                    oResponse.data.pRating = oResponse.data.Rating === 0 ? "0%" : ((oResponse.data.Rating - 1) * 100 / 4).toFixed(2) + "%";
 
                                     if (oPoi.Order) oResponse.data.Order = oPoi.Order;
                                     oResponse.data.isFavorite = oPoi.isFavorite;
@@ -101,12 +101,9 @@ angular.module('citiesApp')
                             $(oResponse.data).each(
                                 (idx, elem) => {
                                     elem.DateFormatted = moment(new Date(elem.Date)).format("Do MMMM YYYY")
-                                    // if (elem.Rating)
-                                    // elem.Rating = elem.Rating === 0 ? "0%" : ((elem.Rating - 1) * 100 / 4).toFixed(2) + "%";
                                 }
                             )
                             $scope.poiReviews = oResponse.data;
-                            // waitDialog.hide();
                         },
                         function (oErr) {
 

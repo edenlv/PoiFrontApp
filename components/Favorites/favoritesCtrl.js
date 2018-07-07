@@ -40,7 +40,7 @@ angular.module('citiesApp')
                                     else elem.Order = favOrders.indexOf(elem.PID) + 1;
                                     elem.isFavorite = true;
 
-                                    if (!elem.Rating.toString().includes('%')) elem.Rating = elem.Rating === 0 ? "0%" : ((elem.Rating - 1) * 100 / 4).toFixed(2) + "%";
+                                    elem.pRating = elem.Rating === 0 ? "0%" : ((elem.Rating - 1) * 100 / 4).toFixed(2) + "%";
                                 }
                             );
 

@@ -29,11 +29,11 @@ angular.module('citiesApp')
                     $('#form_login').validate({
                         rules: {
                             username: {
-                                minlength: 1,
+                                // minlength: 1,
                                 required: true
                             },
                             password: {
-                                required: true,
+                                // required: true,
                                 minlength: 1
                             }
                         },
@@ -120,7 +120,6 @@ angular.module('citiesApp')
                     $('#form_forgot').validate({
                         rules: {
                             username: {
-                                minlength: 1,
                                 required: true
                             }
                         },
